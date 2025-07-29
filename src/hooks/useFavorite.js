@@ -2,10 +2,11 @@ import { favoriteAtom } from "../recoil/favBtnAtom";
 import FavoriteButton from "../components/features/favorites";
 import axios from 'axios';
 import { useRecoilState } from "recoil";
- 
+import {useNavigate} from 'react-router-dom';
 
 const useFavorite = (itemId, itemType) =>{
     const [favorites, setFavorites] = useRecoilState(favoriteAtom);
+    const navigate = useNavigate();
 
     const isFavorite = favorites.includes(itemId);
 
@@ -23,7 +24,7 @@ const useFavorite = (itemId, itemType) =>{
         }catch(err){
             console.error(err.response?.data?.message || "something went wrong")
             if (err.response?.status === 401) {
-                navigate('/login');
+                navigate('/login?message=Please login first');
               }
         }  
     }

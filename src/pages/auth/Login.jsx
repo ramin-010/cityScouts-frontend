@@ -1,16 +1,24 @@
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate , useLocation} from 'react-router-dom';
 import { useAuth } from '../../recoil/useAuth';
 
 const Login = () => {
   const { login } = useAuth();
+  const location = useLocation();
   const navigate = useNavigate();
+  const queryParams = new URLSearchParams(location.search);
+  const initialMessage = queryParams.get('message');
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+
+  useEffect(()=>{
+    setError(initialMessage)
+  },[initialMessage]);
 
   const handleSumbit = async (e) => {
     e.preventDefault();

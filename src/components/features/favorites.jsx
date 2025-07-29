@@ -5,10 +5,10 @@ import useFavorite from '../../hooks/useFavorite';
 const FavoriteButton = ({ itemId, itemType }) => {
   const {isFavorite, toogleFavorite} = useFavorite(itemId, itemType);
   
-  const handleFavoriteClick = (e) => {
+  const handleFavoriteClick = async(e) => {
     e.preventDefault();
     e.stopPropagation();   
-    toogleFavorite()
+    await toogleFavorite()
   };
   
   return (

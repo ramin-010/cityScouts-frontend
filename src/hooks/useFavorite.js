@@ -14,11 +14,11 @@ const useFavorite = (itemId, itemType) =>{
             if(isFavorite){
                 const res = await axios.delete(`${import.meta.env.VITE_FETCH_URL}/api/users/favorite/${itemId}`,{ data: { model: itemType },withCredentials: true});
                 setFavorites(prev => prev.filter(id => id != itemId));
-                console.log(res.data?.message)
+               
             }else{
-                setFavorites(prev => [...prev, itemId]);
                 const res = await axios.post(`${import.meta.env.VITE_FETCH_URL}/api/users/favorite/${itemId}`,{model : itemType},{withCredentials: true});
-                console.log(res.data?.message)
+                setFavorites(prev => [...prev, itemId]);
+               
             }
         }catch(err){
             console.error(err.response?.data?.message || "something went wrong")

@@ -22,6 +22,9 @@ const useFavorite = (itemId, itemType) =>{
             }
         }catch(err){
             console.error(err.response?.data?.message || "something went wrong")
+            if (err.response?.status === 401) {
+                navigate('/login');
+              }
         }  
     }
 

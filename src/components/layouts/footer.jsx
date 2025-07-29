@@ -1,0 +1,208 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import {
+  FaMapMarkerAlt,
+  FaFacebook,
+  FaTwitter,
+  FaInstagram,
+  FaYoutube,
+  FaEnvelope,
+  FaPhone,
+  FaMapMarkedAlt,
+} from 'react-icons/fa';
+
+const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
+  return (
+    <footer className="bg-gray-900 text-gray-300">
+      {/* Wave Divider */}
+
+      <div className="container mx-auto px-12 pt-12 pb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* About Section */}
+          <div>
+            <div className="flex items-center space-x-2 mb-6">
+              <FaMapMarkerAlt className="text-teal-500 text-2xl" />
+              <span className="text-2xl font-bold text-white">
+                City<span className="text-teal-500">Scouts</span>
+              </span>
+            </div>
+            <p className="text-gray-400 mb-6">
+              Discover the best of Chandigarh with CityScouts. Your ultimate guide to local
+              attractions, dining, events, and transportation options.
+            </p>
+            <div className="flex space-x-4">
+              <a
+                href="https://facebook.com"
+                className="text-gray-400 hover:text-teal-400 transition-colors"
+                aria-label="Facebook"
+              >
+                <FaFacebook size={20} />
+              </a>
+              <a
+                href="https://twitter.com"
+                className="text-gray-400 hover:text-teal-400 transition-colors"
+                aria-label="Twitter"
+              >
+                <FaTwitter size={20} />
+              </a>
+              <a
+                href="https://instagram.com"
+                className="text-gray-400 hover:text-teal-400 transition-colors"
+                aria-label="Instagram"
+              >
+                <FaInstagram size={20} />
+              </a>
+              <a
+                href="https://youtube.com"
+                className="text-gray-400 hover:text-teal-400 transition-colors"
+                aria-label="YouTube"
+              >
+                <FaYoutube size={20} />
+              </a>
+            </div>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h3 className="text-lg font-semibold text-white mb-6 border-b border-gray-700 pb-2">
+              Quick Links
+            </h3>
+            <ul className="space-y-3">
+              <li>
+                <Link
+                  to="/attractions"
+                  className="text-gray-400 hover:text-teal-400 transition-colors"
+                >
+                  Explore Attractions
+                </Link>
+              </li>
+              <li>
+                <Link to="/dining" className="text-gray-400 hover:text-teal-400 transition-colors">
+                  Find Restaurants
+                </Link>
+              </li>
+              <li>
+                <Link to="/events" className="text-gray-400 hover:text-teal-400 transition-colors">
+                  Upcoming Events
+                </Link>
+              </li>
+              <li>
+                <Link to="/profile" className="text-gray-400 hover:text-teal-400 transition-colors">
+                  My Account
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Destinations */}
+          <div>
+            <h3 className="text-lg font-semibold text-white mb-6 border-b border-gray-700 pb-2">
+              Top Destinations
+            </h3>
+            <ul className="space-y-3">
+              <li>
+                <Link
+                  to="/attractions/1"
+                  className="text-gray-400 hover:text-teal-400 transition-colors"
+                >
+                  Sukhna Lake
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/attractions/2"
+                  className="text-gray-400 hover:text-teal-400 transition-colors"
+                >
+                  Rock Garden
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/attractions/4"
+                  className="text-gray-400 hover:text-teal-400 transition-colors"
+                >
+                  Capitol Complex
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/dining/1"
+                  className="text-gray-400 hover:text-teal-400 transition-colors"
+                >
+                  Pal Dhaba
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/events/1"
+                  className="text-gray-400 hover:text-teal-400 transition-colors"
+                >
+                  Rose Festival
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Contact Info */}
+          <div>
+            <h3 className="text-lg font-semibold text-white mb-6 border-b border-gray-700 pb-2">
+              Contact Us
+            </h3>
+            <ul className="space-y-4">
+              <li className="flex items-start space-x-3">
+                <FaMapMarkedAlt className="text-teal-500 mt-1 flex-shrink-0" />
+                <span className="text-gray-400">SCO 123-124, Sector 17-C, Chandigarh, 160017</span>
+              </li>
+              <li className="flex items-center space-x-3">
+                <FaPhone className="text-teal-500 flex-shrink-0" />
+                <span className="text-gray-400">+91 172 1234567</span>
+              </li>
+              <li className="flex items-center space-x-3">
+                <FaEnvelope className="text-teal-500 flex-shrink-0" />
+                <span className="text-gray-400">info@cityscouts.com</span>
+              </li>
+            </ul>
+
+            <form className="mt-6">
+              <div className="flex">
+                <input
+                  type="email"
+                  placeholder="Subscribe to newsletter"
+                  className="bg-gray-800 text-white px-4 py-2 rounded-l-md focus:outline-none focus:ring-2 focus:ring-teal-500 border-0 flex-grow"
+                />
+                <button
+                  type="submit"
+                  className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-r-md transition-colors"
+                >
+                  Subscribe
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        {/* Bottom Section */}
+        <div className="border-t border-gray-800 mt-4 pt-8 flex flex-col md:flex-row justify-between items-center">
+          <div className="text-gray-500 text-sm mb-4 md:mb-0">
+            &copy; {currentYear} CityScouts. All rights reserved.
+          </div>
+          <div className="flex space-x-6">
+            <Link to="/privacy" className="text-gray-500 hover:text-teal-400 text-sm">
+              Privacy Policy
+            </Link>
+            <Link to="/terms" className="text-gray-500 hover:text-teal-400 text-sm">
+              Terms of Service
+            </Link>
+            <Link to="/about" className="text-gray-500 hover:text-teal-400 text-sm">
+              About Us
+            </Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;

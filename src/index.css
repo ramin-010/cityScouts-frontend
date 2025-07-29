@@ -1,0 +1,321 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Excon';
+  src: url('/excon/Excon-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Excon';
+  src: url('/excon/Excon-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Excon';
+  src: url('/excon/Excon-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Excon';
+  src: url('/excon/Excon-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Excon';
+  src: url('/excon/Excon-Variable.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Khand';
+  src: url('/khand/Khand-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Khand';
+  src: url('/khand/Khand-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Khand';
+  src: url('/khand/Khand-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Khand';
+  src: url('/khand/Khand-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Khand';
+  src: url('/khand/Khand-Variable.woff2') format('woff2-variations');
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --primary: #0d9488;
+  --primary-dark: #0f766e;
+  --primary-light: #14b8a6;
+  --gray: #f3f4f6;
+  --dark-bg: #111827;
+  --dark-card: #1f2937;
+  --dark-border: #374151;
+  --dark-hover: #374151;
+  --text-dark: #1f2937;
+  --text-light: #f3f4f6;
+  --text-muted: #6b7280;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeInMore {
+  from {
+    opacity: 0;
+    transform: translateY(35px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInMore {
+  animation: fadeInMore 1s ease forwards;
+}
+body {
+  overflow-x: hidden;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+/* Global scrollbar styles */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary) var(--dark-bg);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--dark-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--primary);
+  border-radius: 6px;
+  border: 2px solid var(--dark-bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--primary-dark);
+}
+
+/* Custom Scrollbar (for specific containers) */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: rgba(17, 24, 39, 0.5);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(17, 24, 39, 0.8);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(15, 118, 110, 0.8);
+}
+
+/* Featured Attractions Scrollbar - Higher Specificity */
+.attractionPage .featured-scrollbar,
+.attractionPage .featured-scrollbar * {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 128, 105, 0.474) transparent;
+}
+
+.attractionPage .featured-scrollbar::-webkit-scrollbar {
+  width: 4px !important;
+  height: 4px !important;
+}
+
+.attractionPage .featured-scrollbar::-webkit-scrollbar-track {
+  background-color: transparent !important;
+  border-radius: 4px !important;
+  margin: 4px 0 !important;
+}
+
+.attractionPage .featured-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.173) !important;
+  border-radius: 4px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.attractionPage .featured-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* Dark card styles */
+.dark-card {
+  background-color: #1f2937;
+  border-radius: 0.5rem;
+  border: 1px solid #374151;
+  transition: all 0.3s ease;
+}
+
+.dark-card:hover {
+  background-color: #272f41;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Text gradient */
+.text-gradient {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(to right, var(--primary), var(--primary-light));
+}
+
+/* Custom utility classes */
+.teal-gradient {
+  background: linear-gradient(90deg, #0d9488 0%, #22d3ee 100%);
+}
+
+.text-shadow {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.hover-lift {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Section backgrounds */
+.bg-teal-gradient {
+  background: linear-gradient(135deg, var(--teal-50) 0%, var(--teal-100) 100%);
+}
+
+.bg-section-dark {
+  background-color: #1f2937;
+}
+
+.dark-select {
+  @apply bg-gray-800 text-white border border-gray-700 rounded-md;
+}
+
+@layer base {
+  body {
+    @apply bg-gray-900 text-gray-100 font-sans;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-semibold text-white;
+  }
+
+  a {
+    @apply transition-colors duration-700;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 shadow-sm;
+  }
+
+  .btn-primary {
+    @apply bg-teal-600 text-white hover:bg-teal-700 focus:ring-teal-500;
+  }
+
+  .btn-secondary {
+    @apply bg-gray-700 text-white border border-gray-600 hover:bg-gray-600 focus:ring-teal-500;
+  }
+
+  .input {
+    @apply px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-teal-500;
+  }
+
+  .card {
+    @apply bg-gray-800 rounded-xl shadow-md overflow-hidden border border-gray-700 hover:shadow-lg transition-shadow;
+  }
+
+  .filter-btn {
+    @apply px-4 py-2 rounded-full text-sm font-medium transition-all bg-gray-700 border border-gray-600 text-gray-300 hover:bg-gray-600 hover:border-teal-700 hover:text-teal-300 focus:outline-none focus:ring-2 focus:ring-teal-500 shadow-sm;
+  }
+
+  .filter-btn-active {
+    @apply bg-teal-600 border-teal-700 text-white shadow-sm;
+  }
+
+  .card-link {
+    @apply text-teal-400 hover:text-teal-300 font-medium inline-flex items-center;
+  }
+}

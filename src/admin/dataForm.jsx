@@ -1,4 +1,4 @@
- import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -19,11 +19,12 @@ const deepUpdate = (obj, pathArr, val) => {
 };
 
 const baseDefaults = {
-  name: '',      //done
-  description: '',  //done
-  mainImage: '',  //done
-  images: [],   //done
-  location: {     //done
+  name: '', //done
+  description: '', //done
+  mainImage: '', //done
+  images: [], //done
+  location: {
+    //done
     address: '',
     city: '',
     state: '',
@@ -33,19 +34,20 @@ const baseDefaults = {
       coordinates: [0, 0], // [longitude, latitude]
     },
   },
-  isFeatured: false,   //done
-  isDeleted: false,   //done
-  publicIdMain: '',  //done
+  isFeatured: false, //done
+  isDeleted: false, //done
+  publicIdMain: '', //done
   publicIdSub: [], //done
-  category: '',    //done
+  category: '', //done
 };
 
 // Per-entity defaults
 const entityDefaults = {
   attractions: {
-    ticketPrice: { adult: 0, child: 0, student: 0, senior: 0 },   //done
-    features: [],  //done
-    openingHours: {  //done
+    ticketPrice: { adult: 0, child: 0, student: 0, senior: 0 }, //done
+    features: [], //done
+    openingHours: {
+      //done
       monday: '9:00 AM - 7:00 PM',
       tuesday: '9:00 AM - 7:00 PM',
       wednesday: '9:00 AM - 7:00 PM',
@@ -53,15 +55,16 @@ const entityDefaults = {
       friday: '9:00 AM - 7:00 PM',
       saturday: '9:00 AM - 7:00 PM',
       sunday: '9:00 AM - 7:00 PM',
-    },   
-    rating: 0,  //done  
-    reviews: [],  //not handling review yet in the backend
+    },
+    rating: 0, //done
+    reviews: [], //not handling review yet in the backend
   },
   dining: {
-    cuisine: '',   //done
-    famousDishes: [],  //done
-    priceRange: '',  //done
-    features: {     //done
+    cuisine: '', //done
+    famousDishes: [], //done
+    priceRange: '', //done
+    features: {
+      //done
       delivery: false,
       takeout: false,
       outdoorSeating: false,
@@ -69,7 +72,8 @@ const entityDefaults = {
       wifi: false,
       acceptsReservations: false,
     },
-    openingHours: {   //done
+    openingHours: {
+      //done
       monday: '9:00 AM - 7:00 PM',
       tuesday: '9:00 AM - 7:00 PM',
       wednesday: '9:00 AM - 7:00 PM',
@@ -77,28 +81,30 @@ const entityDefaults = {
       friday: '9:00 AM - 7:00 PM',
       saturday: '9:00 AM - 7:00 PM',
       sunday: '9:00 AM - 7:00 PM',
-    },  
-    rating: 0,   //done
+    },
+    rating: 0, //done
     reviews: [], //not handling review yet in the backend
   },
   events: {
-    date: { start: '', end: '' },  //done
-    time: { start: '', end: '' },   //done
-   // ticketPrice: 0,  no need even though in the schema
-    features: {     //done
+    date: { start: '', end: '' }, //done
+    time: { start: '', end: '' }, //done
+    // ticketPrice: 0,  no need even though in the schema
+    features: {
+      //done
       familyFriendly: false,
       accessible: false,
       parking: false,
       outdoor: false,
-      free: false
+      free: false,
     },
-    organizer: {    //done
-      name: '', 
-      contact: { 
-        email: '', 
-        phone: '', 
-        website: '' 
-      } 
+    organizer: {
+      //done
+      name: '',
+      contact: {
+        email: '',
+        phone: '',
+        website: '',
+      },
     },
   },
 };
@@ -118,7 +124,6 @@ const DataForm = () => {
     slug = qs.get('slug');
   }
 
-  console.log('isAddMode:', isAddMode, tab);
   const [formData, setFormData] = useState({
     ...baseDefaults,
     ...entityDefaults[tab],
@@ -128,15 +133,15 @@ const DataForm = () => {
     setFormData({ ...baseDefaults, ...entityDefaults[tab] });
   }, [tab]);
 
-  useEffect(()=>{
-    if(!isAddMode){
-      setFormData(prev => ({
+  useEffect(() => {
+    if (!isAddMode) {
+      setFormData((prev) => ({
         ...prev,
-        openingHours : {}
-      }))
+        openingHours: {},
+      }));
     }
-  },[])
-  
+  }, []);
+
   useEffect(() => {
     if (!user) return;
 
@@ -184,20 +189,20 @@ const DataForm = () => {
   const handleImagesChange = (imgs) => setFormData((p) => ({ ...p, images: imgs }));
 
   //! Main function
-  const [loading , setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true)
+      setLoading(true);
       const fd = new FormData();
       //stringified data(5)
-      if(formData.name) fd.append('name', formData.name);  
-      if(formData.description) fd.append('description', formData.description);  
-      if(formData.category) fd.append('category', formData.category);
-      if(formData.isFeatured) fd.append('featured', formData.isFeatured);
-      if(formData.isDeleted)  fd.append('isDeleted', formData.isDeleted);
-      
+      if (formData.name) fd.append('name', formData.name);
+      if (formData.description) fd.append('description', formData.description);
+      if (formData.category) fd.append('category', formData.category);
+      if (formData.isFeatured) fd.append('featured', formData.isFeatured);
+      if (formData.isDeleted) fd.append('isDeleted', formData.isDeleted);
+
       //location(6)
       const locationObject = {
         address: formData.location?.address || '',
@@ -209,27 +214,27 @@ const DataForm = () => {
           coordinates: [0, 0],
         },
       };
-      fd.append('location', JSON.stringify(locationObject));   //handling the location in the backend for its trueness
+      fd.append('location', JSON.stringify(locationObject)); //handling the location in the backend for its trueness
 
       // Other nested fields with conditional quering(12)
-      if(tab === 'attractions' || tab === 'dining'){    
+      if (tab === 'attractions' || tab === 'dining') {
         fd.append('openingHours', JSON.stringify(formData.openingHours || {}));
-        fd.append('rating', JSON.stringify(formData.rating))
+        fd.append('rating', JSON.stringify(formData.rating));
       }
-      if(tab === 'attractions' || tab === 'events'){
+      if (tab === 'attractions' || tab === 'events') {
         fd.append('ticketPrice', JSON.stringify(formData.ticketPrice || {}));
       }
-      if(tab === 'dining'){
+      if (tab === 'dining') {
         fd.append('cuisine', JSON.stringify(formData.cuisine));
         fd.append('famousDishes', JSON.stringify(formData.famousDishes));
         fd.append('priceRange', JSON.stringify(formData.priceRange));
       }
-      if(tab === 'events'){
+      if (tab === 'events') {
         fd.append('date', JSON.stringify(formData.date || {}));
         fd.append('time', JSON.stringify(formData.time || {}));
         fd.append('organizer', JSON.stringify(formData.organizer || {}));
       }
-      fd.append('features', JSON.stringify(formData.features || {})); 
+      fd.append('features', JSON.stringify(formData.features || {}));
       // Files
       if (formData.mainImage) {
         if (formData.mainImage instanceof File) {
@@ -238,10 +243,10 @@ const DataForm = () => {
           fd.append('mainImageUrl', formData.mainImage);
         }
       }
-      if(formData.publicIdMain){
-        fd.append('publicIdMain',  formData.publicIdMain);
+      if (formData.publicIdMain) {
+        fd.append('publicIdMain', formData.publicIdMain);
       }
-      if(formData.publicIdSub.length > 0){
+      if (formData.publicIdSub.length > 0) {
         fd.append('publicIdSub', JSON.stringify(formData.publicIdSub));
       }
 
@@ -255,14 +260,13 @@ const DataForm = () => {
         });
       }
 
-      console.log('FormData contents:'); //#log
-      for (let [key, val] of fd.entries()) {
-        if (val instanceof File) {
-          console.log(key, `[File: ${val.name}, ${val.size} bytes]`);
-        } else {
-          console.log(key, val);
-        }
-      }
+      // for (let [key, val] of fd.entries()) {
+      //   if (val instanceof File) {
+
+      //   } else {
+
+      //   }
+      // }
 
       // Axios request
       const url = isAddMode
@@ -277,12 +281,15 @@ const DataForm = () => {
       });
       toast.success(`${isAddMode ? 'Successfully Added' : 'Successfully updated'}`);
     } catch (err) {
-      toast.error(err.response?.data?.message || `${isAddMode ? 'Error Adding the data' : 'Error updating the data'}`, {
-        autoClose: 6000,
-      });
-      console.log(err.response?.data?.message)
-    }finally{
-      setLoading(false)
+      toast.error(
+        err.response?.data?.message ||
+          `${isAddMode ? 'Error Adding the data' : 'Error updating the data'}`,
+        {
+          autoClose: 6000,
+        }
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -317,11 +324,13 @@ const DataForm = () => {
 
           <div className="pt-4 flex justify-end">
             <button type="submit" className="px-6 py-2 bg-teal-600 rounded-md">
-              {loading ?(
-                isAddMode ? 'Creating...' : 'Updating...'
-              ) : (
-                isAddMode ? 'Create' : 'Update'
-              )}
+              {loading
+                ? isAddMode
+                  ? 'Creating...'
+                  : 'Updating...'
+                : isAddMode
+                  ? 'Create'
+                  : 'Update'}
             </button>
           </div>
         </form>

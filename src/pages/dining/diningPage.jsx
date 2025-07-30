@@ -22,27 +22,30 @@ const DiningItem = memo(({ dining }) => {
         to={`/dining/${dining.slug}`}
         className="block bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-700 relative "
       >
-         <div className='absolute '>
-             {<div className=' p-2 '> <FavoriteButton itemType={'dinings'} itemId={dining._id}/></div>}
-          </div>
+        <div className="absolute ">
+          {
+            <div className=" p-2 ">
+              {' '}
+              <FavoriteButton itemType={'dinings'} itemId={dining._id} />
+            </div>
+          }
+        </div>
         <div className="md:flex">
           <div className="md:w-[25rem]  w-full ">
             {!imageError ? (
-              <div className='w-full h-full flex items-center justify-center'>
+              <div className="w-full h-full flex items-center justify-center">
                 <img
-                src={dining.mainImage}
-                onError={() => setImageError(true)}
-                alt={dining.name}
-                className="w-[98%] h-[98%] object-cover rounded-lg"
-              />
-              
+                  src={dining.mainImage}
+                  onError={() => setImageError(true)}
+                  alt={dining.name}
+                  className="w-[98%] h-[98%] object-cover rounded-lg"
+                />
               </div>
-          ) : (
-            <div className="w-full h-full  object-cover rounded-xl mt-0.5  text-white bg-gray-900 flex text-center justify-center items-center font-khand">
-              Oops...! <br /> Image Not Available yet
-            </div>
+            ) : (
+              <div className="w-full h-full  object-cover rounded-xl mt-0.5  text-white bg-gray-900 flex text-center justify-center items-center font-khand">
+                Oops...! <br /> Image Not Available yet
+              </div>
             )}
-           
           </div>
           <div className="md:p-6 p-4 md:w-2/3">
             <div className="flex justify-between items-start mb-2">
@@ -55,7 +58,7 @@ const DiningItem = memo(({ dining }) => {
               <div className="flex items-center bg-gray-700 px-2 py-1 rounded">
                 <FaStar className="text-yellow-400 mr-1" />
                 <span className="text-white font-medium md:text-base text-sm">{dining.rating}</span>
-                <span className="text-gray-400 text-xs ml-1">({dining.reviews})</span>
+                {/* <span className="text-gray-400 text-xs ml-1">({dining.reviews})</span> */}
               </div>
             </div>
 
@@ -92,7 +95,7 @@ const Dining = () => {
     features: [],
   });
   const [featured, setFeatured] = useState([]);
-  const debouncedQuery = useDebounce(searchQuery, 1000)
+  const debouncedQuery = useDebounce(searchQuery, 1000);
 
   const { data, loading, error, hasMore, fetchMore, resetData, currentPage } = useFetchWithQuery(
     `${import.meta.env.VITE_FETCH_URL}/api/dining`,
@@ -140,36 +143,35 @@ const Dining = () => {
       const updatedFilter = {
         ...prev,
         [filterType]: prev[filterType] == value ? defaultValues[filterType] : value,
-      }
+      };
       resetData(updatedFilter);
       return updatedFilter;
     });
-   
   };
 
   //handle feature change
   const handleFeatureChange = (value) => {
     setActiveFilters((prev) => {
       const updatedFeature = {
-          ...prev,
-          ['features']: prev['features'].includes(value)
+        ...prev,
+        ['features']: prev['features'].includes(value)
           ? prev['features'].filter((e) => e !== value)
           : [...prev['features'], value],
-      }
+      };
       resetData(updatedFeature);
       return updatedFeature;
     });
   };
- 
-    const searchQueryHandler = (e) => {
-        setSearchQuery(e.target.value);
-    };
-    useEffect(() => {
-      resetData({
-        search: debouncedQuery,
-      });
-    }, [debouncedQuery]);
-    
+
+  const searchQueryHandler = (e) => {
+    setSearchQuery(e.target.value);
+  };
+  useEffect(() => {
+    resetData({
+      search: debouncedQuery,
+    });
+  }, [debouncedQuery]);
+
   return (
     <div className="min-h-screen bg-gray-900 pt-24 pb-12 animate-fadeInMore">
       <div className="md:max-w-[85vw] max-w-[97vw] mx-auto px-4 sm:px-6 lg:px-8 ">
@@ -189,7 +191,14 @@ const Dining = () => {
                 {
                   title: 'category',
                   key: 'category',
-                  values: ['All', 'Street Food', 'Casual Dining', 'Fine Dining', 'Cafe/Bakery', 'Other'],
+                  values: [
+                    'All',
+                    'Street Food',
+                    'Casual Dining',
+                    'Fine Dining',
+                    'Cafe/Bakery',
+                    'Other',
+                  ],
                 },
                 {
                   title: 'Price Range',

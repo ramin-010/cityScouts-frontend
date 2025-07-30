@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
+import { ProtectedRoute } from './components/features/ProtectedRoute';
 
 import { useAuth } from './recoil/useAuth';
 
@@ -25,107 +26,73 @@ import EventDetail from './pages/events/detailPage';
 import { RecoilRoot } from 'recoil';
 
 const router = [
-  {
-    path: '/',
-    element: <Home />,
-  },
-  {
-    path: '/attractions',
-    element: <Attraction />,
-  },
-  {
-    path: '/attractions/:slug',
-    element: <AttractionDetail />,
-  },
-  {
-    path: '/dining',
-    element: <Dining />,
-  },
-  {
-    path: '/dining/:slug',
-    element: <DiningDetail />,
-  },
-  {
-    path: '/events',
-    element: <Events />,
-  },
-  {
-    path: '/events/:slug',
-    element: <EventDetail />,
-  },
-  {
-    path: '/login',
-    element: <Login />,
-  },
-  {
-    path: '/signup',
-    element: <SignUp />,
-  },
-  {
-    path: '*',
-    element: <NotFound />,
-  },
-  {
-    path: '/profile',
-    element: <Profile />,
-  },
-  {
-    path: '/search',
-    element: <SearchResults />,
-  },
-  {
-    path: '/admin',
-    element: <Dashboard />,
-  },
-  {
-    path: '/admin/add',
-    element: <DataForm />,
-  },
-  {
-    path: '/admin/update',
-    element: <DataForm />,
-  },
+  { path: '/', element: <Home /> },
+  { path: '/attractions', element: <Attraction /> },
+  { path: '/attractions/:slug', element: <AttractionDetail /> },
+  { path: '/dining', element: <Dining /> },
+  { path: '/dining/:slug', element: <DiningDetail /> },
+  { path: '/events', element: <Events /> },
+  { path: '/events/:slug', element: <EventDetail /> },
+  { path: '/login', element: <Login /> },
+  { path: '/signup', element: <SignUp /> },
+  { path: '*', element: <NotFound /> },
+  { path: '/profile', element: <Profile /> },
+  { path: '/search', element: <SearchResults /> },
 ];
 
 function Layout() {
   return (
-    <>
-      <div className="flex flex-col min-h-screen">
-        <Header />
-        <main className="">
-          <Outlet />
-        </main>
-        <Footer />
-      </div>
-    </>
+    <div className="flex flex-col min-h-screen">
+      <Header />
+      <main>
+        <Outlet />
+      </main>
+      <Footer />
+    </div>
   );
 }
 
+const AdminLayout = () => (
+  <Layout>
+    <Outlet />
+  </Layout>
+);
+
 function App() {
   return (
-    <>
-      <BrowserRouter>
-        <RecoilRoot>
-          <ScrollToTop />
-          <ToastContainer
-            position="top-right" // other options: top-center, bottom-left, etc.
-            autoClose={3000} // close after 3s
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            pauseOnHover
-            draggable
-          />
-          <Routes>
-            <Route element={<Layout />}>
-              {router.map((e, idx) => (
-                <Route key={idx} path={e.path} element={e.element} />
-              ))}
+    <BrowserRouter>
+      <RecoilRoot>
+        <ScrollToTop />
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          pauseOnHover
+          draggable
+        />
+        <Routes>
+          {/* Admin protected routes with layout */}
+          <Route element={<ProtectedRoute adminOnly={true} />}>
+            <Route element={<AdminLayout />}>
+              <Route path="/admin">
+                <Route index element={<Dashboard />} />
+                <Route path="add" element={<DataForm />} />
+                <Route path="update" element={<DataForm />} />
+              </Route>
             </Route>
-          </Routes>
-        </RecoilRoot>
-      </BrowserRouter>
-    </>
+          </Route>
+
+          {/* Public routes */}
+          <Route element={<Layout />}>
+            {router.map((e, idx) => (
+              <Route key={idx} path={e.path} element={e.element} />
+            ))}
+          </Route>
+        </Routes>
+      </RecoilRoot>
+    </BrowserRouter>
   );
 }
 

@@ -34,7 +34,9 @@ function to12Hour(time) {
 const AttractionDetail = () => {
   const { slug } = useParams();
   const [activeTab, setActiveTab] = useState('about');
-  const { data, error, loading } = useFetch(`${import.meta.env.VITE_FETCH_URL}/api/attractions/${slug}`);
+  const { data, error, loading } = useFetch(
+    `${import.meta.env.VITE_FETCH_URL}/api/attractions/${slug}`
+  );
 
   useEffect(() => {
     document.title = `CityScouts | Attraction Details`;
@@ -86,13 +88,12 @@ const AttractionDetail = () => {
   }
 
   const galleryImages =
-    data.galleryImages && data.galleryImages.length > 1 ? data.galleryImages : [data.mainImage];  
+    data.galleryImages && data.galleryImages.length > 1 ? data.galleryImages : [data.mainImage];
 
   // Note: GeoJSON uses [longitude, latitude] order
   const longitude = data.location?.coordinates?.coordinates?.[0] || 76.7794;
   const latitude = data.location?.coordinates?.coordinates?.[1] || 30.7333;
-  console.log("this is the coordinaties ",data.location?.coordinates?.coordinates?.[0])
-  console.log("sec coor",data.location?.coordinates?.coordinates?.[1])
+
   return (
     <div className="min-h-screen bg-gray-900 pt-24 pb-12 animate-fadeInMore">
       <div className="md:max-w-[85vw] max-w-[97vw] mx-auto px-4 sm:px-6 lg:px-8">
@@ -136,22 +137,21 @@ const AttractionDetail = () => {
                         </svg>
                         {data.rating?.toFixed(1) || 'N/A'}
                       </span>
-                      <span className="text-gray-400 text-sm">({data.reviews || 0} reviews)</span>
+                      {/* <span className="text-gray-400 text-sm">({data.reviews || 0} reviews)</span> */}
                     </div>
                   </div>
                 </div>
 
                 <div className="rounded-xl overflow-hidden shadow-lg border border-gray-700 bg-gray-800">
-                <div className="w-full h-96 relative">
-                  <img
-                    src={galleryImages[0]}
-                    alt={data.name}
-                    className="absolute inset-0 w-full h-full object-cover object-center"
-                    loading="lazy"
-                  />
+                  <div className="w-full h-96 relative">
+                    <img
+                      src={galleryImages[0]}
+                      alt={data.name}
+                      className="absolute inset-0 w-full h-full object-cover object-center"
+                      loading="lazy"
+                    />
+                  </div>
                 </div>
-              </div>
-
               </div>
 
               {/* Quick Facts Card */}
@@ -162,7 +162,7 @@ const AttractionDetail = () => {
                     <div>
                       <span className="block text-gray-400 text-xs mb-1">Address</span>
                       <span className="text-gray-200 text-sm">
-                        { data.location?.address || 'N/A'}
+                        {data.location?.address || 'N/A'}
                       </span>
                     </div>
                     <div>

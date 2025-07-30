@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { StyledWrapper } from '../components/externalComps/flipCardComp';
 
-
 const Profile = () => {
   const { updateProfile, currentUser, loading } = useAuth();
   const [activeTab, setActiveTab] = useState('My Profile');
@@ -470,11 +469,11 @@ const SavedItemComponent = ({ img, name, category, location }) => {
     <>
       <StyledWrapper>
         <div className="card">
-          <img src={img} alt={name} className="card__icon"  loading="lazy"/>
+          <img src={img} alt={name} className="card__icon" loading="lazy" />
           <div className="card__content">
             <p className="card__title">{name}</p>
             <p className="card__description">{category}</p>
-            <p className='card_location'>{location}</p>
+            <p className="card_location">{location}</p>
           </div>
           <button
             className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md"

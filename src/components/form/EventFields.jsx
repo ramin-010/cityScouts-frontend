@@ -2,14 +2,7 @@ import React from 'react';
 import { TextInput, SelectInput } from './FieldComponents';
 
 export default function EventFields({ data, onChange }) {
-  const categories = [
-    'Festival',
-    'Entertainment',
-    'Exhibition',
-    'Education',
-    'Sports',
-    'others'
-  ];
+  const categories = ['Festival', 'Entertainment', 'Exhibition', 'Education', 'Sports', 'others'];
 
   // Handle feature toggle
   const handleFeatureToggle = (e) => {
@@ -20,7 +13,7 @@ export default function EventFields({ data, onChange }) {
   return (
     <section className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
       <h2 className="text-xl font-semibold mb-4 text-teal-400">Event Details</h2>
-      
+
       {/* Features Section */}
       <div className="mb-4">
         <h3 className="text-lg font-semibold mb-2 text-teal-300">Features</h3>

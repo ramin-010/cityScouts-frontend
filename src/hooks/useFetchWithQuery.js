@@ -10,7 +10,7 @@ const useFetchWithQuery = (url, intialQuery = {}, options = {}) => {
   const [error, setError] = useState(null);
   const page = useRef(intialQuery.page || 1);
   const controllerRef = useRef(null);
- // const debouncedQuery = useDebounce(query, 1000)
+  // const debouncedQuery = useDebounce(query, 1000)
 
   const fetchData = async (reset = false) => {
     // cancel in-flight request
@@ -23,38 +23,32 @@ const useFetchWithQuery = (url, intialQuery = {}, options = {}) => {
     try {
       setLoading(true);
       const currentPage = reset ? 1 : page.current + 1;
-   
+
       const queryParams = new URLSearchParams({
         ...query,
         page: currentPage,
       });
-      console.log("this is the query going", queryParams)
-    
-      const res = await axios.get(
-        `${url}?${queryParams}`,
-        {
-          withCredentials: true,
-          signal: controllerRef.current.signal,  
-        }
-      );
+
+      const res = await axios.get(`${url}?${queryParams}`, {
+        withCredentials: true,
+        signal: controllerRef.current.signal,
+      });
       const fetchedData = res.data.data;
       const totalData = res.data.total;
-      console.log("the length of the fetched data", fetchedData.length)
+
       if (reset) {
         setData(fetchedData);
         page.current = 1;
-        setHasmore(fetchedData.length < totalData)
+        setHasmore(fetchedData.length < totalData);
       } else {
         setData((prev) => {
-          const combined = [...prev , ...fetchedData];
-          console.log("this is combined  length", combined.length);
-          console.log("this is the total data", totalData)
+          const combined = [...prev, ...fetchedData];
+
           setHasmore(combined.length < totalData);
-          return combined
+          return combined;
         });
         page.current += 1;
       }
-
     } catch (err) {
       if (err.code !== 'ERR_CANCELED') {
         setError(err);
@@ -74,11 +68,10 @@ const useFetchWithQuery = (url, intialQuery = {}, options = {}) => {
   }, []);
 
   const resetData = (newQuery = {}) => {
-    console.log("this is the new query", newQuery);
-    setQuery(prev => {
+    setQuery((prev) => {
       const updatedQuery = {
         ...prev,
-        ...newQuery
+        ...newQuery,
       };
       return updatedQuery;
     });
@@ -89,7 +82,6 @@ const useFetchWithQuery = (url, intialQuery = {}, options = {}) => {
   useEffect(() => {
     fetchData(true);
   }, [query]);
-  
 
   return {
     data,

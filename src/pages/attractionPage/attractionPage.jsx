@@ -31,8 +31,8 @@ const Attraction = () => {
     price: '',
   });
   const [featured, setFeatured] = useState([]);
-  
-const debouncedQuery = useDebounce(searchQuery, 1000)
+
+  const debouncedQuery = useDebounce(searchQuery, 1000);
 
   //!dynamic req start
   const {
@@ -74,7 +74,6 @@ const debouncedQuery = useDebounce(searchQuery, 1000)
         fetchMore().finally(() => {
           isFetchingRef.current = false;
         });
-       
       }
     };
 
@@ -84,27 +83,25 @@ const debouncedQuery = useDebounce(searchQuery, 1000)
 
   // handling filter change
   const handleFilterChange = (filterType, value) => {
-    console.log("the filter coming ", filterType , value)
     setActiveFilters((prev) => {
       const updatedFilter = {
         ...prev,
         [filterType]: prev[filterType] === value ? '' : value,
-      }
+      };
       resetData(updatedFilter);
       return updatedFilter;
     });
   };
 
   const searchQueryHandler = (e) => {
-      setSearchQuery(e.target.value);
+    setSearchQuery(e.target.value);
   };
-  
+
   useEffect(() => {
     resetData({
       search: debouncedQuery,
     });
   }, [debouncedQuery]);
-  
 
   //for only rendering the featured attraction on mount
   useEffect(() => {
@@ -121,7 +118,7 @@ const debouncedQuery = useDebounce(searchQuery, 1000)
         location: '',
         rating: '',
         price: '',
-      }
+      };
       resetData(updated);
       return updated;
     });
@@ -141,7 +138,9 @@ const debouncedQuery = useDebounce(searchQuery, 1000)
 
             {/* Featured List - scrollable on mobile */}
             <div className="absolute inset-0 md:mt-4 mt-12 md:px-4 px-3 overflow-y-auto max-h-full flex flex-col gap-3 z-20 featured-scrollbar">
-              <h3 className="text-gray-800 font-bold text-xl tracking-wider font-chillax mb-1 px-1">  </h3>
+              <h3 className="text-gray-800 font-bold text-xl tracking-wider font-chillax mb-1 px-1">
+                {' '}
+              </h3>
               <div className="space-y-3">
                 {featured.map((item) => (
                   <FetureAttraction
@@ -311,9 +310,9 @@ const debouncedQuery = useDebounce(searchQuery, 1000)
 const GlobalCardDetails = (props) => {
   return (
     <>
-      <div className="p-5">
+      <div className="p-4">
         <div className="flex justify-between items-start mb-2">
-          <h3 className="text-xl font-bold text-white group-hover:text-teal-400 transition-colors duration-300">
+          <h3 className="text-xl font-bold text-white group-hover:text-teal-400 transition-colors duration-300 line-clamp-1">
             {props.name}
           </h3>
           <span className="bg-gray-700 text-teal-400 text-xs px-2 py-1 rounded">
@@ -347,9 +346,9 @@ const GlobalCardDetails = (props) => {
         </div>
 
         {props.features && (
-          <div className="mt-4 pt-4 border-t border-gray-700 flex flex-wrap gap-2">
+          <div className="mt-4 pt-4 border-t border-gray-700 flex flex-wrap gap-1.5">
             {props.features.slice(0, 3).map((feature, index) => (
-              <span key={index} className="text-xs bg-gray-700 text-gray-300 px-2 py-1 rounded">
+              <span key={index} className="text-[0.7rem] bg-gray-700 text-gray-300 px-2 py-1 rounded">
                 {feature}
               </span>
             ))}
@@ -364,7 +363,7 @@ import { Link } from 'react-router-dom';
 
 const FetureAttraction = (props) => {
   const { _id, slug, imageUrl, mainImage, name, rating, totalReviews, category } = props;
-  
+
   return (
     <div className="group relative overflow-hidden rounded-xl bg-gray-800/15 hover:bg-gray-800/60 transition-all duration-300 border border-gray-700/0 hover:border-teal-500/30 shadow-[0_0_10px_rgba(0,0,0,0.1)] hover:shadow-xl hover:shadow-teal-500/5">
       <Link
@@ -383,7 +382,11 @@ const FetureAttraction = (props) => {
           </h4>
           <div className="mt-1 flex items-center text-xs text-gray-400">
             <span className="flex items-center">
-              <svg className="w-3.5 h-3.5 mr-1 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+              <svg
+                className="w-3.5 h-3.5 mr-1 text-yellow-400"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
               </svg>
               {rating ? rating.toFixed(1) : 'N/A'}

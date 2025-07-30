@@ -40,13 +40,14 @@ export default function CommonFields({ slug = 'default', tab, data, onChange, on
     const fetchData = async () => {
       try {
         setLoading(true);
-        console.log("this is the slug data before" )
-        const res = await axios.get(`${import.meta.env.VITE_FETCH_URL}/api/${tab}/admin/${slug}`, {withCredentials : true});
+
+        const res = await axios.get(`${import.meta.env.VITE_FETCH_URL}/api/${tab}/admin/${slug}`, {
+          withCredentials: true,
+        });
         const doc = res.data.data;
-        console.log("this is the slug data " ,doc)
+
         setSlugData(doc);
       } catch (err) {
-        console.log('err fetching data', err);
       } finally {
         setLoading(false);
       }
@@ -72,7 +73,6 @@ export default function CommonFields({ slug = 'default', tab, data, onChange, on
 
   const handleCheckChange = (id) => {
     setToDeleteIds((prev) => (prev.includes(id) ? prev.filter((e) => e != id) : [...prev, id]));
-    console.log(toDeleteIds);
   };
   const handleMainImageChange = (e) => {
     const file = e.target.files[0];

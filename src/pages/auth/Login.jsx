@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate , useLocation} from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../recoil/useAuth';
 
 const Login = () => {
@@ -7,18 +7,20 @@ const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
-  const initialMessage = queryParams.get('message');
+  const initialMessage = queryParams.get('message') || '';
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+  const from = location.state?.from || '/';
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-
-  useEffect(()=>{
-    setError(initialMessage)
-  },[initialMessage]);
+  useEffect(() => {
+    if (initialMessage) {
+      setError(initialMessage);
+    }
+  }, [initialMessage]);
 
   const handleSumbit = async (e) => {
     e.preventDefault();
@@ -26,7 +28,7 @@ const Login = () => {
     try {
       setLoading(true);
       await login(formData.email, formData.password);
-      navigate('/');
+      navigate(from, { replace: true });
     } catch (err) {
       setError(err.message || 'Failed to log in. Please try again');
     } finally {

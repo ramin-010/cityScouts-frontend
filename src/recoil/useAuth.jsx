@@ -1,5 +1,11 @@
 import { useRecoilState } from 'recoil';
-import { currentUserAtom, isAuthenticatedAtom, loadingAtom, errorAtom } from './authAtoms';
+import {
+  currentUserAtom,
+  isAuthenticatedAtom,
+  loadingAtom,
+  errorAtom,
+  hasCheckedAuthAtom,
+} from './authAtoms';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -9,6 +15,7 @@ export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useRecoilState(isAuthenticatedAtom);
   const [error, setError] = useRecoilState(errorAtom);
   const [loading, setLoading] = useRecoilState(loadingAtom);
+  const [hasCheckedAuth, setHasCheckedAuth] = useRecoilState(hasCheckedAuthAtom);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,13 +28,12 @@ export const useAuth = () => {
         if (res.data.data && res.data.success) {
           setCurrentUser(res.data.data);
           setIsAuthenticated(true);
-          console.log("this is the user data ", res.data.data)
+          setHasCheckedAuth(true);
         } else {
           setIsAuthenticated(false);
           setCurrentUser(null);
         }
       } catch (err) {
-        console.log('Auth Error:', err);
         setIsAuthenticated(false);
         setCurrentUser(null);
         setError(err.response?.data?.message || 'Authentication check failed');
@@ -35,8 +41,10 @@ export const useAuth = () => {
         setLoading(false);
       }
     };
-    checkAuth();
-  }, [setCurrentUser, setIsAuthenticated, setError]);
+    if (!hasCheckedAuth) {
+      checkAuth();
+    }
+  }, [hasCheckedAuth]);
 
   //login function
   const login = async (email, password) => {
@@ -68,7 +76,6 @@ export const useAuth = () => {
 
   const signup = async (name, email, password) => {
     try {
-      console.log('Starting signup with:', { name, email });
       setLoading(true);
       setError(''); // Clear any previous errors
 
@@ -85,7 +92,7 @@ export const useAuth = () => {
       return res.data;
     } catch (err) {
       const backendMessage = err?.response?.data?.message;
-      console.log('backend message :', backendMessage);
+
       setError(backendMessage || 'Something went wrong, Signup failed');
       throw new Error(backendMessage);
     } finally {
@@ -109,7 +116,6 @@ export const useAuth = () => {
       }
       setError(null);
     } catch (err) {
-      console.log('Error logging out' || err?.response?.data?.message);
       setError(err.response?.data?.message);
     } finally {
       setLoading(false);
@@ -130,7 +136,6 @@ export const useAuth = () => {
       setCurrentUser(updatadUser);
       setError(null);
     } catch (err) {
-      console.log('Profile update error: ', err);
       setError(err.response?.data?.message || 'Profile update Failed. Please try again');
     } finally {
       setLoading(false);

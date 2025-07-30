@@ -46,7 +46,6 @@ export default function Dashboard() {
         setUsers(getArray(uRes));
         setError(null);
       } catch (err) {
-        console.log('Error fetching the data :', err);
         setError('Failed to fetch the data');
       } finally {
         setLoading(false);
@@ -80,10 +79,6 @@ export default function Dashboard() {
       );
     }
   }, []);
-
-  useEffect(() => {
-    console.log(`attractions ${attractions}`);
-  }, [attractions, events, dining, users]);
 
   // Calculate statistics
   const computeStats = (items) => {
@@ -119,10 +114,12 @@ export default function Dashboard() {
 
   const handleSoftDelete = async (id) => {
     try {
-      const res = await axios.delete(`${import.meta.env.VITE_FETCH_URL}/api/${activeTab}/admin/soft/${id}`, {
-        withCredentials: true,
-      });
-      console.log(activeTab);
+      const res = await axios.delete(
+        `${import.meta.env.VITE_FETCH_URL}/api/${activeTab}/admin/soft/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
       toast.success('Soft delete was successfull');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Soft delete Unsuccessful');
@@ -131,10 +128,12 @@ export default function Dashboard() {
 
   const handleDelete = async (id) => {
     try {
-      console.log(activeTab);
-      const res = await axios.delete(`${import.meta.env.VITE_FETCH_URL}/api/${activeTab}/admin/hard/${id}`, {
-        withCredentials: true,
-      });
+      const res = await axios.delete(
+        `${import.meta.env.VITE_FETCH_URL}/api/${activeTab}/admin/hard/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
       toast.success('hard delete was successfull');
     } catch (err) {
       console.error('Error while hard deleting', err.response?.data?.message);
@@ -527,7 +526,7 @@ const StatContainer = ({ icon, name, stats }) => {
                   <dd className="flex items-baseline">
                     <div className="text-2xl font-semibold text-white">{stats.total}</div>
                     <div className="ml-2 flex items-baseline text-sm font-semibold text-teal-400">
-                      {stats.featured} featured 
+                      {stats.featured} featured
                     </div>
                   </dd>
                 ) : (

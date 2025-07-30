@@ -11,7 +11,6 @@ export default function AttractionFields({ data, onChange }) {
     'Tours',
     'Other',
   ];
-    
 
   return (
     <section className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8">
@@ -36,19 +35,18 @@ export default function AttractionFields({ data, onChange }) {
         placeholder="Guided tours, Souvenir shop"
       />
 
-
       <div className="space-y-2 my-6">
         <h3 className="text-lg font-semibold text-teal-300">Opening Hours</h3>
         <div className="relative">
           <textarea
             className={`w-full h-64 bg-gray-700 border ${data.openingHours ? 'border-gray-600' : 'border-red-500'} rounded px-3 py-2 text-white font-mono text-sm`}
-            value={JSON.stringify(data.openingHours , null , 2)}
+            value={JSON.stringify(data.openingHours, null, 2)}
             onChange={(e) => {
               try {
                 const val = JSON.parse(e.target.value);
                 onChange({ target: { name: 'openingHours', value: val } });
               } catch (err) {
-                console.warn("Invalid JSON format");
+                console.warn('Invalid JSON format');
               }
             }}
             spellCheck={false}
@@ -77,7 +75,7 @@ export default function AttractionFields({ data, onChange }) {
           ))}
         </div>
       </div> */}
-        
+
       {/* Ticket Prices */}
       <div className="grid grid-cols-2 gap-4">
         {['adult', 'child', 'student', 'senior'].map((age) => (

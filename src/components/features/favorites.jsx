@@ -3,14 +3,14 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import useFavorite from '../../hooks/useFavorite';
 
 const FavoriteButton = ({ itemId, itemType }) => {
-  const {isFavorite, toogleFavorite} = useFavorite(itemId, itemType);
-  
-  const handleFavoriteClick = async(e) => {
+  const { isFavorite, toogleFavorite } = useFavorite(itemId, itemType);
+
+  const handleFavoriteClick = async (e) => {
     e.preventDefault();
-    e.stopPropagation();   
-    await toogleFavorite()
+    e.stopPropagation();
+    await toogleFavorite();
   };
-  
+
   return (
     <button
       onClick={handleFavoriteClick}
@@ -26,4 +26,4 @@ const FavoriteButton = ({ itemId, itemType }) => {
   );
 };
 
-export default FavoriteButton; 
+export default FavoriteButton;

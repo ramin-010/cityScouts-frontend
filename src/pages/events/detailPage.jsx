@@ -90,7 +90,7 @@ const EventDetail = () => {
     data.galleryImages && data.galleryImages.length > 0 ? data.galleryImages : [data.mainImage];
 
   // Extract coordinates for MapView
-  const latitude =  data.location?.coordinates?.coordinates?.[0] || 30.7333;
+  const latitude = data.location?.coordinates?.coordinates?.[0] || 30.7333;
   const longitude = data.location?.coordinates?.coordinates?.[1] || 76.7794;
 
   return (
@@ -140,21 +140,21 @@ const EventDetail = () => {
                         </svg>
                         {data.rating?.toFixed(1) || 'N/A'}
                       </span>
-                      <span className="text-gray-400 text-sm">({'data.reviews || 0'} reviews)</span>
+                      {/* <span className="text-gray-400 text-sm">({'data.reviews || 0'} reviews)</span> */}
                     </div>
                   </div>
                 </div>
 
                 <div className="rounded-xl overflow-hidden shadow-lg border border-gray-700 bg-gray-800">
-                <div className="w-full h-96 relative">
-                  <img
-                    src={galleryImages[0]}
-                    alt={data.name}
-                    className="absolute inset-0 w-full h-full object-cover object-center"
-                    loading="lazy"
-                  />
+                  <div className="w-full h-96 relative">
+                    <img
+                      src={galleryImages[0]}
+                      alt={data.name}
+                      className="absolute inset-0 w-full h-full object-cover object-center"
+                      loading="lazy"
+                    />
+                  </div>
                 </div>
-              </div>
               </div>
 
               {/* Quick Facts Card */}

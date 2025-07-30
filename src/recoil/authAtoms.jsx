@@ -18,3 +18,8 @@ export const errorAtom = atom({
   key: 'errorAtom',
   default: null,
 });
+
+export const hasCheckedAuthAtom = atom({
+  key: 'hasCheckAuthAtom',
+  default: false,
+});

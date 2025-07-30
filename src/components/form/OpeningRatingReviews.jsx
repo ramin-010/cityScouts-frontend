@@ -8,7 +8,6 @@ export default function OpeningRatingReviews({ data, onChange }) {
       <h2 className="text-xl font-semibold mb-4 text-teal-400">Hours & Rating</h2>
 
       {/* Opening Hours – simple comma-string for now; adjust as needed */}
-    
 
       <TextInput
         label="Rating (1-5)"

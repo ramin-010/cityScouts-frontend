@@ -1,19 +1,24 @@
-import { useNavigate , useLocation} from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import FavoriteButton from './favorites';
 
-const GlobalCardComponent = ({ children, img='https://via.placeholder.com/800x600?text=Chandigarh+Carnival+Banner', slug, page, key, itemId }) => {
+const GlobalCardComponent = ({
+  children,
+  img = 'https://via.placeholder.com/800x600?text=Chandigarh+Carnival+Banner',
+  slug,
+  page,
+  itemId,
+}) => {
   const navigate = useNavigate();
   const [imageError, setImageError] = useState('');
-  const [showFavBtn , setShowFavBtn] = useState(true);
-  const {pathname} = useLocation();
-  
-  useEffect(()=>{
-    if(pathname.endsWith('/')){
+  const [showFavBtn, setShowFavBtn] = useState(true);
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    if (pathname.endsWith('/')) {
       setShowFavBtn(!showFavBtn);
     }
-  },[pathname])
-
+  }, [pathname]);
 
   const handleCardClick = () => {
     navigate(`/${page}/${slug}`);
@@ -21,11 +26,10 @@ const GlobalCardComponent = ({ children, img='https://via.placeholder.com/800x60
 
   return (
     <div
-      onClick={handleCardClick}
-      key={key}
-      className="w-full h-full bg-gray-800 backdrop-blur-sm rounded-xl transition-all duration-500 overflow-hidden shadow hover:shadow-xl border border-gray-900/80 hover:border-gray-900 group cursor-pointer"
-    >
-      <div className="md:h-56 h-44 w-[97%] mx-auto py-1.5 overflow-hidden rounded-lg">
+    onClick={handleCardClick}
+    className="w-full h-full flex flex-col bg-gray-800 backdrop-blur-sm rounded-xl transition-all duration-500 overflow-hidden shadow hover:shadow-xl border border-gray-900/80 hover:border-gray-900 group cursor-pointer"
+  >
+   <div className="md:h-56 h-44 w-[97%] mx-auto py-1.5 overflow-hidden rounded-lg">
         <div className="w-full h-full overflow-hidden rounded-lg">
           {!imageError ? (
             <img
@@ -46,8 +50,13 @@ const GlobalCardComponent = ({ children, img='https://via.placeholder.com/800x60
           
         </div>
       </div>
+  
+    {/* Children (Details section) */}
+    <div className="flex-1 flex flex-col">
       {children}
     </div>
+  </div>
+  
   );
 };
 

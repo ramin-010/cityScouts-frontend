@@ -20,16 +20,10 @@ export default function DiningFields({ data, onChange }) {
     'Punjabi',
     'South Indian',
     'Street Food',
-    'Vegetarian'
+    'Vegetarian',
   ];
 
-  const categories = [
-    'Street Food',
-    'Casual Dining',
-    'Fine Dining',
-    'Cafe/Bakery',
-    'Other'
-  ];
+  const categories = ['Street Food', 'Casual Dining', 'Fine Dining', 'Cafe/Bakery', 'Other'];
 
   const priceRanges = ['$', '$$', '$$$', '$$$$'];
   const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
@@ -42,7 +36,7 @@ export default function DiningFields({ data, onChange }) {
     parking: false,
     wifi: false,
     acceptsReservations: false,
-    ...(data.features || {})
+    ...(data.features || {}),
   });
 
   // Initialize opening hours with default values if not present
@@ -54,7 +48,7 @@ export default function DiningFields({ data, onChange }) {
     friday: 'Closed',
     saturday: 'Closed',
     sunday: 'Closed',
-    ...(data.openingHours || {})
+    ...(data.openingHours || {}),
   });
 
   // Handle features change
@@ -93,7 +87,7 @@ export default function DiningFields({ data, onChange }) {
   return (
     <section className="bg-gray-800 p-6 rounded-lg shadow-lg mb-8 space-y-6">
       <h2 className="text-2xl font-bold mb-6 text-teal-400">Dining Details</h2>
-      
+
       {/* Cuisine Section */}
       <div className="space-y-4">
         <h3 className="text-lg font-semibold text-teal-300">Cuisine & Category</h3>
@@ -160,13 +154,13 @@ export default function DiningFields({ data, onChange }) {
         <div className="relative">
           <textarea
             className={`w-full h-64 bg-gray-700 border ${data.openingHours ? 'border-gray-600' : 'border-red-500'} rounded px-3 py-2 text-white font-mono text-sm`}
-            value={JSON.stringify(data.openingHours , null , 2)}
+            value={JSON.stringify(data.openingHours, null, 2)}
             onChange={(e) => {
               try {
                 const val = JSON.parse(e.target.value);
                 onChange({ target: { name: 'openingHours', value: val } });
               } catch (err) {
-                console.warn("Invalid JSON format");
+                console.warn('Invalid JSON format');
               }
             }}
             spellCheck={false}
@@ -208,9 +202,7 @@ export default function DiningFields({ data, onChange }) {
                 onChange={handleFeatureChange}
                 className="rounded border-gray-600 text-teal-500"
               />
-              <span className="capitalize">
-                {key.replace(/([A-Z])/g, ' $1').trim()}
-              </span>
+              <span className="capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</span>
             </label>
           ))}
         </div>

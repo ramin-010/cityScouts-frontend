@@ -38,7 +38,7 @@ const Signup = () => {
     try {
       setLoading(true);
       await signup(formData.name, formData.email, formData.password);
-      console.log('req successfull');
+
       navigate('/profile');
     } catch (err) {
       setError(err.message || 'Failed to create account. Please try again.');

@@ -97,27 +97,59 @@ const Events = () => {
     resetData( {filter :category} );
   };
 
-  //handling scroll for pagination
+  // Enhanced infinite scroll with better mobile support
   const isFetchingRef = useRef(false);
+  const lastScrollY = useRef(0);
+  const scrollTimeout = useRef(null);
+
   useEffect(() => {
     const handleScroll = () => {
+      // Get current scroll position
+      const currentScrollY = window.scrollY;
+      const scrollDirection = currentScrollY > lastScrollY.current ? 'down' : 'up';
+      lastScrollY.current = currentScrollY;
+
+      // Only trigger when scrolling down
+      if (scrollDirection !== 'down') return;
+
+      // Calculate distance from bottom
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const scrollPosition = window.scrollY + windowHeight;
+      const scrollThreshold = window.innerWidth < 768 ? 500 : 200; // Larger threshold for mobile
+      const distanceFromBottom = documentHeight - scrollPosition;
+
+      // Clear any existing timeout
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
+
+      // Only proceed if we're close to the bottom and not already loading
       if (
-        window.innerHeight + document.documentElement.scrollTop + 200 >=
-          document.documentElement.scrollHeight &&
+        distanceFromBottom < scrollThreshold &&
         hasMore &&
         !loading &&
         !isFetchingRef.current
       ) {
-        isFetchingRef.current = true;
-        fetchMore().finally(() => {
-          isFetchingRef.current = false;
-        });
+        // Use a small debounce to prevent multiple rapid triggers
+        scrollTimeout.current = setTimeout(() => {
+          isFetchingRef.current = true;
+          fetchMore().finally(() => {
+            isFetchingRef.current = false;
+          });
+        }, 50);
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [hasMore, loading]);
+    // Add passive: true for better scrolling performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
+    };
+  }, [hasMore, loading, fetchMore]);
 
   //setting page title
   useEffect(() => {

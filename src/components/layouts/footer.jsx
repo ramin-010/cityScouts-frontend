@@ -16,23 +16,21 @@ const Footer = () => {
 
   return (
     <footer className="bg-gray-900 text-gray-300">
-      {/* Wave Divider */}
-
-      <div className="container mx-auto px-12 pt-12 pb-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 pt-8 pb-8 sm:pt-12 sm:pb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {/* About Section */}
           <div>
-            <div className="flex items-center space-x-2 mb-6">
-              <FaMapMarkerAlt className="text-teal-500 text-2xl" />
-              <span className="text-2xl font-bold text-white">
+            <div className="flex items-center space-x-2 mb-4 sm:mb-6">
+              <FaMapMarkerAlt className="text-teal-500 text-xl sm:text-2xl" />
+              <span className="text-xl sm:text-2xl font-bold text-white">
                 City<span className="text-teal-500">Scouts</span>
               </span>
             </div>
-            <p className="text-gray-400 mb-6">
+            <p className="text-gray-400 text-sm sm:text-base mb-4 sm:mb-6">
               Discover the best of Chandigarh with CityScouts. Your ultimate guide to local
               attractions, dining, events, and transportation options.
             </p>
-            <div className="flex space-x-4">
+            <div className="flex space-x-4 flex-wrap gap-2">
               <a
                 href="https://facebook.com"
                 className="text-gray-400 hover:text-teal-400 transition-colors"
@@ -66,10 +64,10 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold text-white mb-6 border-b border-gray-700 pb-2">
+            <h3 className="text-base sm:text-lg font-semibold text-white mb-4 sm:mb-6 border-b border-gray-700 pb-2">
               Quick Links
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-2 sm:space-y-3 text-sm sm:text-base">
               <li>
                 <Link
                   to="/attractions"
@@ -98,10 +96,10 @@ const Footer = () => {
 
           {/* Destinations */}
           <div>
-            <h3 className="text-lg font-semibold text-white mb-6 border-b border-gray-700 pb-2">
+            <h3 className="text-base sm:text-lg font-semibold text-white mb-4 sm:mb-6 border-b border-gray-700 pb-2">
               Top Destinations
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-2 sm:space-y-3 text-sm sm:text-base">
               <li>
                 <Link
                   to="/attractions/1"
@@ -147,10 +145,10 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div>
-            <h3 className="text-lg font-semibold text-white mb-6 border-b border-gray-700 pb-2">
+            <h3 className="text-base sm:text-lg font-semibold text-white mb-4 sm:mb-6 border-b border-gray-700 pb-2">
               Contact Us
             </h3>
-            <ul className="space-y-4">
+            <ul className="space-y-3 sm:space-y-4 text-sm sm:text-base">
               <li className="flex items-start space-x-3">
                 <FaMapMarkedAlt className="text-teal-500 mt-1 flex-shrink-0" />
                 <span className="text-gray-400">SCO 123-124, Sector 17-C, Chandigarh, 160017</span>
@@ -169,12 +167,12 @@ const Footer = () => {
               <div className="flex">
                 <input
                   type="email"
-                  placeholder="Subscribe to newsletter"
-                  className="bg-gray-800 text-white px-4 py-2 rounded-l-md focus:outline-none focus:ring-2 focus:ring-teal-500 border-0 flex-grow"
+                  placeholder="Email"
+                  className="bg-gray-800 text-white px-3 sm:px-4 py-2 text-sm sm:text-base rounded-l-md focus:outline-none focus:ring-2 focus:ring-teal-500 border-0 flex-grow w-0 min-w-0"
                 />
                 <button
                   type="submit"
-                  className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-r-md transition-colors"
+                  className="bg-teal-600 hover:bg-teal-700 text-white px-3 sm:px-4 py-2 text-sm sm:text-base rounded-r-md transition-colors whitespace-nowrap"
                 >
                   Subscribe
                 </button>
@@ -184,18 +182,18 @@ const Footer = () => {
         </div>
 
         {/* Bottom Section */}
-        <div className="border-t border-gray-800 mt-4 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <div className="text-gray-500 text-sm mb-4 md:mb-0">
+        <div className="border-t border-gray-800 mt-6 sm:mt-8 pt-6 sm:pt-8 flex flex-col sm:flex-row justify-between items-center">
+          <div className="text-gray-500 text-xs sm:text-sm mb-3 sm:mb-0 text-center sm:text-left">
             &copy; {currentYear} CityScouts. All rights reserved.
           </div>
-          <div className="flex space-x-6">
-            <Link to="/privacy" className="text-gray-500 hover:text-teal-400 text-sm">
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-6">
+            <Link to="/privacy" className="text-gray-400 hover:text-teal-400 text-xs sm:text-sm whitespace-nowrap">
               Privacy Policy
             </Link>
-            <Link to="/terms" className="text-gray-500 hover:text-teal-400 text-sm">
+            <Link to="/terms" className="text-gray-400 hover:text-teal-400 text-xs sm:text-sm whitespace-nowrap">
               Terms of Service
             </Link>
-            <Link to="/about" className="text-gray-500 hover:text-teal-400 text-sm">
+            <Link to="/about" className="text-gray-400 hover:text-teal-400 text-xs sm:text-sm whitespace-nowrap">
               About Us
             </Link>
           </div>

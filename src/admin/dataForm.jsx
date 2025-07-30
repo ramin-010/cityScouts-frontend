@@ -62,7 +62,7 @@ const entityDefaults = {
   dining: {
     cuisine: '', //done
     famousDishes: [], //done
-    priceRange: '', //done
+    priceRange: '$$', //done
     features: {
       //done
       delivery: false,
@@ -225,9 +225,9 @@ const DataForm = () => {
         fd.append('ticketPrice', JSON.stringify(formData.ticketPrice || {}));
       }
       if (tab === 'dining') {
-        fd.append('cuisine', JSON.stringify(formData.cuisine));
+      if(formData.cuisine) fd.append('cuisine', JSON.stringify(formData.cuisine));
         fd.append('famousDishes', JSON.stringify(formData.famousDishes));
-        fd.append('priceRange', JSON.stringify(formData.priceRange));
+      if(formData.priceRange !== '$$')  fd.append('priceRange', JSON.stringify(formData.priceRange));
       }
       if (tab === 'events') {
         fd.append('date', JSON.stringify(formData.date || {}));

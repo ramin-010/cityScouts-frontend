@@ -1,4 +1,5 @@
 import hero from '@/assets/Hero_image_Hompage.jpg';
+import hero2 from '@/assets/new/japeneseGarden.webp'
 
 import { useState, useEffect, useRef, useCallback, memo } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -61,25 +62,57 @@ const Attraction = () => {
   }, [loading, originalFetchMore]);
 
   const isFetchingRef = useRef(false);
+  const lastScrollY = useRef(0);
+  const scrollTimeout = useRef(null);
+
   useEffect(() => {
     const handleScroll = () => {
+      // Get current scroll position
+      const currentScrollY = window.scrollY;
+      const scrollDirection = currentScrollY > lastScrollY.current ? 'down' : 'up';
+      lastScrollY.current = currentScrollY;
+
+      // Only trigger when scrolling down
+      if (scrollDirection !== 'down') return;
+
+      // Calculate distance from bottom
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const scrollPosition = window.scrollY + windowHeight;
+      const scrollThreshold = window.innerWidth < 768 ? 500 : 200; // Larger threshold for mobile
+      const distanceFromBottom = documentHeight - scrollPosition;
+
+      // Clear any existing timeout
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
+
+      // Only proceed if we're close to the bottom and not already loading
       if (
-        window.innerHeight + document.documentElement.scrollTop + 200 >=
-          document.documentElement.scrollHeight &&
+        distanceFromBottom < scrollThreshold &&
         hasMore &&
         !loading &&
         !isFetchingRef.current
       ) {
-        isFetchingRef.current = true;
-        fetchMore().finally(() => {
-          isFetchingRef.current = false;
-        });
+        // Use a small debounce to prevent multiple rapid triggers
+        scrollTimeout.current = setTimeout(() => {
+          isFetchingRef.current = true;
+          fetchMore().finally(() => {
+            isFetchingRef.current = false;
+          });
+        }, 50);
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [hasMore, loading]);
+    // Add passive: true for better scrolling performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
+    };
+  }, [hasMore, loading, fetchMore]);
 
   // handling filter change
   const handleFilterChange = (filterType, value) => {
@@ -126,18 +159,18 @@ const Attraction = () => {
 
   return (
     <>
-      <div className="attractionPage flex justify-center md:max-w-[97vw] max-w-[97vw] flex-col px-4 md:px-10 lg:px-20 my-28 md:my-44 mx-auto animate-fadeInMore">
+      <div className=" flex justify-center md:max-w-[97vw] max-w-[97vw] flex-col px-4 md:px-10 lg:px-20 my-28 md:my-44 mx-auto animate-fadeInMore">
         {/* Header Section */}
         <h1 className="absolute tracking-tight md:py-2 py-1 md:top-[-3.4rem] top-[-3rem]  md:text-[1.8rem] text-2xl font-semibold font-chillax text-gray-100 bg-gradient-to-r from-gray-900/90 via-teal-700/5 to-transparent rounded-lg px-3 z-10 ">
           Attractions In Chandigarh
         </h1>
         <section className="w-full flex flex-col lg:flex-row gap-8 mb-12">
           <div className="relative top-2 w-full lg:w-[45%] h-[40vh] md:h-[60vh] rounded-xl overflow-hidden">
-            <img src={hero} className="h-full w-full object-cover object-top" alt="Hero" />
+            <img src={hero2} className="h-full w-full object-cover object-top" alt="Hero" />
             <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent" />
 
             {/* Featured List - scrollable on mobile */}
-            <div className="absolute inset-0 md:mt-4 mt-12 md:px-4 px-3 overflow-y-auto max-h-full flex flex-col gap-3 z-20 featured-scrollbar">
+            <div className="absolute inset-0 md:mt-4 mt-2 md:px-4 px-3 overflow-y-auto max-h-full flex flex-col gap-3 z-20 featured-scrollbar">
               <h3 className="text-gray-800 font-bold text-xl tracking-wider font-chillax mb-1 px-1">
                 {' '}
               </h3>

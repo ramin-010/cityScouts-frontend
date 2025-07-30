@@ -64,7 +64,6 @@ export default function DiningFields({ data, onChange }) {
   const handleOpeningHoursChange = (day, value) => {
     const newOpeningHours = { ...openingHours, [day]: value };
     setOpeningHours(newOpeningHours);
-    // Trigger parent's onChange with the new opening hours
     onChange({ target: { name: 'openingHours', value: newOpeningHours } });
   };
 

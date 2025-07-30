@@ -88,6 +88,7 @@ const DiningItem = memo(({ dining }) => {
 
 const Dining = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
   const [activeFilters, setActiveFilters] = useState({
     category: 'All',
     prices: 'All Prices',
@@ -112,25 +113,57 @@ const Dining = () => {
 
   //handle pagination scroll
   const isFetchingRef = useRef(false);
+  const lastScrollY = useRef(0);
+  const scrollTimeout = useRef(null);
+
   useEffect(() => {
     const handleScroll = () => {
+      // Get current scroll position
+      const currentScrollY = window.scrollY;
+      const scrollDirection = currentScrollY > lastScrollY.current ? 'down' : 'up';
+      lastScrollY.current = currentScrollY;
+
+      // Only trigger when scrolling down
+      if (scrollDirection !== 'down') return;
+
+      // Calculate distance from bottom
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const scrollPosition = window.scrollY + windowHeight;
+      const scrollThreshold = window.innerWidth < 768 ? 500 : 300; // Larger threshold for mobile
+      const distanceFromBottom = documentHeight - scrollPosition;
+
+      // Clear any existing timeout
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
+
+      // Only proceed if we're close to the bottom and not already loading
       if (
-        window.innerHeight + document.documentElement.scrollTop + 200 >=
-          document.documentElement.scrollHeight &&
+        distanceFromBottom < scrollThreshold &&
         hasMore &&
         !loading &&
         !isFetchingRef.current
       ) {
-        isFetchingRef.current = true;
-        fetchMore().finally(() => {
-          isFetchingRef.current = false;
-        });
+        // Use a small debounce to prevent multiple rapid triggers
+        scrollTimeout.current = setTimeout(() => {
+          isFetchingRef.current = true;
+          fetchMore().finally(() => {
+            isFetchingRef.current = false;
+          });
+        }, 50);
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [hasMore, loading]);
+    // Add passive: true for better scrolling performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
+    };
+  }, [hasMore, loading, fetchMore]);
 
   //handle filter change
   const handleFilterChange = (filterType, value) => {
@@ -173,23 +206,42 @@ const Dining = () => {
   }, [debouncedQuery]);
 
   return (
-    <div className="min-h-screen bg-gray-900 pt-24 pb-12 animate-fadeInMore">
-      <div className="md:max-w-[85vw] max-w-[97vw] mx-auto px-4 sm:px-6 lg:px-8 ">
+    <div className=" min-h-screen bg-gray-900 pt-20 md:pt-24 pb-12 animate-fadeInMore">
+      <div className="max-w-[97vw] md:max-w-[85vw] mx-auto px-3 sm:px-4 lg:px-8">
         {/* Page Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white">Restaurants in Chandigarh</h1>
-          <p className="text-gray-400 mt-2">Discover the best dining spots in the city</p>
+        <div className="mb-6 md:mb-8 px-2 sm:px-0">
+          <h1 className="text-2xl sm:text-3xl font-bold text-white">Restaurants in Chandigarh</h1>
+          <p className="text-gray-400 mt-1 sm:mt-2 text-sm sm:text-base">Discover the best dining spots in the city</p>
         </div>
 
-        <div className="flex flex-col md:flex-row z-50">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-6 z-50">
+          {/* Mobile Filter Toggle */}
+          <div className="md:hidden">
+            <button
+              onClick={() => setShowMobileFilters(!showMobileFilters)}
+              className="flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg w-full justify-center mb-2 border border-gray-700"
+            >
+              <FaFilter className="text-myteal-400" />
+              {showMobileFilters ? 'Hide Filters' : 'Show Filters'}
+            </button>
+          </div>
+
           {/* Filters Sidebar */}
-          <div className="w-full md:w-1/4 z-50">
-            <div className="sticky top-24 bg-gray-800 rounded-xl p-6 border border-gray-700">
-              <h2 className="text-xl font-bold text-white mb-4">Filters</h2>
+          <div className={`w-full md:w-1/4 z-40 md:block ${showMobileFilters ? 'block' : 'hidden'} featured-scrollbar`}>
+            <div className="sticky top-20 md:top-24 bg-gray-800 rounded-xl p-4 sm:p-6 border border-gray-700 max-h-[80vh] overflow-y-auto featured-scrollbar">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-lg sm:text-xl font-bold text-white">Filters</h2>
+                <button 
+                  className="md:hidden text-gray-400 hover:text-white"
+                  onClick={() => setShowMobileFilters(false)}
+                >
+                  ×
+                </button>
+              </div>
 
               {[
                 {
-                  title: 'category',
+                  title: 'Category',
                   key: 'category',
                   values: [
                     'All',
@@ -266,24 +318,22 @@ const Dining = () => {
           </div>
 
           {/* Main Content */}
-
-          <div className="w-full md:w-3/4  z-0">
+          <div className="w-full md:w-3/4 z-0">
             {/* Sticky Search and Sort - Wrapper */}
-            <div className=" z-30 bg-gray-900  pb-2 min-h-full">
+            <div className="z-30 bg-gray-900 pb-2 min-h-full">
               {/* Search Bar */}
-
-              <div className=" sticky top-20 z-50 bg-gray-900 pt-3 pb-[0.25px] shadow-xl rounded-md pl-8 mb-2">
+              <div className="sticky top-16 md:top-20 z-50 bg-gray-900 pt-3 pb-[0.25px] shadow-xl rounded-md px-2 sm:px-4 md:pl-8 mb-2">
                 <div className="relative mb-3">
                   <input
                     type="text"
                     placeholder="Search restaurants, cuisine, or location..."
-                    className="w-full p-2 pl-10 pr-4 rounded-lg border border-gray-700 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-myteal-500"
+                    className="w-full p-2 pl-8 pr-3 text-sm sm:text-base rounded-lg border border-gray-700 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-myteal-500"
                     value={searchQuery}
                     onChange={searchQueryHandler}
                   />
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <svg
-                      className="h-5 w-5 text-gray-400"
+                      className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -299,12 +349,12 @@ const Dining = () => {
                 </div>
 
                 {/* Sort Options */}
-                <div className="flex justify-between items-center mb-5">
-                  <div className="text-gray-300">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2 sm:gap-0">
+                  <div className="text-sm sm:text-base text-gray-300">
                     {data.length} {data.length === 1 ? 'result' : 'results'} found
                   </div>
-                  <div className="relative">
-                    <select className="bg-gray-800 text-white pl-4 pr-8 py-1 rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-myteal-500 appearance-none">
+                  <div className="relative w-full sm:w-auto">
+                    <select className="w-full bg-gray-800 text-white pl-3 pr-8 py-1.5 text-sm sm:text-base rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-myteal-500 appearance-none">
                       <option value="popularity">Sort by: Popularity</option>
                       <option value="rating">Sort by: Rating</option>
                       <option value="price-low">Sort by: Price (Low to High)</option>
@@ -312,7 +362,7 @@ const Dining = () => {
                     </select>
                     <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
                       <svg
-                        className="w-5 h-5 text-gray-400"
+                        className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -333,14 +383,14 @@ const Dining = () => {
               {/* Restaurants List */}
               <motion.div
                 key={data.slug}
-                className="space-y-6 pl-10 w-[60vw]"
+                className="space-y-4 sm:space-y-6 px-2 sm:px-4 md:pl-10 w-full md:w-[60vw]"
                 initial="hidden"
                 animate="show"
                 variants={{
                   hidden: {},
                   show: {
                     transition: {
-                      staggerChildren: 0.15,
+                      staggerChildren: 0.1,
                     },
                   },
                 }}

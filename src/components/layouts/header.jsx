@@ -18,7 +18,7 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, user, logout,loading } = useAuth();
   const location = useLocation();
   const profileRef = useRef(null);
 
@@ -197,10 +197,21 @@ const Header = () => {
                 <FaCalendarAlt />
                 <span>Events</span>
               </Link>
+              {(user?.role === 'admin' ||
+                user?.role === 'recruiter' ||
+                user?.role === 'contributor') && (
+                <Link
+                  to="/admin"
+                  className="text-gray-300 hover:text-myteal-400 py-2 flex items-center space-x-2"
+                >
+                  <FaUser />
+                  <span>Admin</span>
+                </Link>
+              )}
             </div>
 
             <div className="pt-4 border-t border-gray-700">
-              {isAuthenticated ? (
+              {loading ? null : isAuthenticated ? (
                 <div className="flex flex-col space-y-2">
                   <div className="flex items-center space-x-3 py-2">
                     <img

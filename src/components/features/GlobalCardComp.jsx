@@ -26,6 +26,7 @@ const GlobalCardComponent = ({
 
   return (
     <div
+    key={slug+page}
     onClick={handleCardClick}
     className="w-full h-full flex flex-col bg-gray-800 backdrop-blur-sm rounded-xl transition-all duration-500 overflow-hidden shadow hover:shadow-xl border border-gray-900/80 hover:border-gray-900 group cursor-pointer"
   >
@@ -35,7 +36,7 @@ const GlobalCardComponent = ({
             <img
               src={img}
               alt={slug || 'Card image'}
-              loading="lazy"
+              loading="eager"
               onError={() => setImageError(true)}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
             />

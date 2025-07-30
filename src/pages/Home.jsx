@@ -39,7 +39,7 @@ const Home = () => {
       rating: 4.8,
       slug: 'A-sukhna-lake',
       image:
-        'https://res.cloudinary.com/dbg8levkl/image/upload/v1753879810/attractions/main/ericb1zepxjuhik12top.webp',
+        'https://res.cloudinary.com/dbg8levkl/image/upload/v1753887314/attractions/main/l4q6wdt95nj57iv1rf0k.jpg',
     },
     {
       name: 'Zakir Hussain Rose Garden',

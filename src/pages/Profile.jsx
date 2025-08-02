@@ -344,9 +344,9 @@ const Profile = () => {
                   ) : (
                     <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
                       <div className="w-24 h-24 rounded-full overflow-hidden bg-teal-100 flex-shrink-0 shadow-sm border border-teal-200">
-                        {currentUser && currentUser?.mainImagePublicId ? (
+                        {currentUser && currentUser?.mainImage ? (
                           <img
-                            src={currentUser?.mainImagePublicId}
+                            src={currentUser?.mainImage}
                             alt={currentUser?.name}
                             className="w-full h-full object-cover"
                           />

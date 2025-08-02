@@ -104,7 +104,7 @@ const Header = () => {
               user?.role === 'contributor') && (
               <div className="px-3 py-2 bg-myteal-600 hover:bg-myteal-900 rounded-full md:mr-4">
                 <Link to="/admin">
-                  <p className="font-chillax font-bold">Admin</p>
+                  <p className="font-chillax font-bold">Dashboard</p>
                 </Link>
               </div>
             )}

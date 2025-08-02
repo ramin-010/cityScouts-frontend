@@ -154,7 +154,6 @@ const Events = () => {
   //setting page title
   useEffect(() => {
     document.title = 'Events in Chandigarh | CityScouts';
-    console.log(data);
     return () => {
       document.title = 'CityScouts';
     };

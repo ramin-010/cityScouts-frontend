@@ -209,7 +209,6 @@ const Profile = () => {
                             name="name"
                             onChange={handleInputChange}
                             value={formData.name}
-                            required
                           />
                         </div>
 
@@ -228,7 +227,6 @@ const Profile = () => {
                               onChange={(e) =>
                                 setFormData((prev) => ({ ...prev, email: e.target.value }))
                               }
-                              required
                             />
                           ) : (
                             <button

@@ -136,7 +136,6 @@ export default function Dashboard() {
       );
       toast.success('hard delete was successfull');
     } catch (err) {
-      console.error('Error while hard deleting', err.response?.data?.message);
       toast.error(err.response?.data?.message || 'hard delete Unsuccessful');
     }
   };

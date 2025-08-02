@@ -125,7 +125,11 @@ export const useAuth = () => {
   const updateProfile = async (userData) => {
     try {
       setLoading(true);
-      console.log("this is the user ",userData)
+    
+      console.log('Form Data form the useAuth udpate profile sending this data:');
+      for (let [key, value] of userData.entries()) {
+        console.log(key, value);
+      }
       const response = await axios.put(
         `${import.meta.env.VITE_FETCH_URL}/api/users/updateProfile/${currentUser._id}`,
         userData,

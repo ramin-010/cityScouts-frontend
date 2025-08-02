@@ -117,7 +117,7 @@ const Header = () => {
                   className="flex items-center space-x-2 bg-gray-800 hover:bg-gray-700 text-white rounded-full px-3 py-2 transition-colors"
                 >
                   <img
-                    src={user?.profilePic || '#'}
+                    src={user?.mainImage || '#'}
                     alt={user?.name || 'User'}
                     className="w-8 h-8 rounded-full object-cover border-2 border-myteal-500"
                   />
@@ -215,7 +215,7 @@ const Header = () => {
                 <div className="flex flex-col space-y-2">
                   <div className="flex items-center space-x-3 py-2">
                     <img
-                      src={user?.profilePic || '#'}
+                      src={user?.mainImage || '#'}
                       alt={user?.name || 'User'}
                       className="w-10 h-10 rounded-full object-cover border-2 border-myteal-500"
                     />

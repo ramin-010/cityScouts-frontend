@@ -1,7 +1,16 @@
 import React, { act, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../recoil/useAuth';
-import elanteMall from '../assets/elante_mall.png';
+
+import {
+  FaArrowLeft,
+  FaExclamationTriangle,
+  FaUsers,
+  FaUtensils,
+  FaCalendarAlt,
+  FaMapMarkerAlt,
+  FaLink,
+} from 'react-icons/fa';
 
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -14,11 +23,13 @@ const Profile = () => {
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [updateError, setUpdateError] = useState(null);
   const [formData, setFormData] = useState({
-    name: currentUser?.name,
-    mainImage: '',
+    name: currentUser?.name || '',
+    photoUrl: currentUser?.photoUrl || '',
+    image: null, 
     password: '',
-    email: '',
+    email: currentUser?.email || '',
   });
+  const [imagePreview, setImagePreview] = useState(currentUser?.photoUrl || '');
 
   const [showPassword, setShowPassword] = useState(false);
   const togglePassword = () => setShowPassword((prev) => !prev);
@@ -34,7 +45,16 @@ const Profile = () => {
     setUpdateError(null);
 
     try {
-      await updateProfile(formData);
+      const updatedFormData = new FormData();
+      updatedFormData.append('name', formData.name);
+      updatedFormData.append('email', formData.email);
+      updatedFormData.append('password', formData.password);
+      if (formData.image) {
+        updatedFormData.append('image', formData.image);
+      }
+
+
+      await updateProfile(updatedFormData);
       setUpdateSuccess(true);
       setIsEditing(false);
     } catch (err) {
@@ -44,10 +64,27 @@ const Profile = () => {
   };
 
   const handleInputChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    if (e.target.name === 'image') {
+      const file = e.target.files[0];
+      if (file) {     
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImagePreview(reader.result);
+        };
+        reader.readAsDataURL(file);
+        
+        // Update form data with the file
+        setFormData(prev => ({
+          ...prev,
+          image: file
+        }));
+      }
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [e.target.name]: e.target.value,
+      }));
+    }
   };
   const cancelEdit = () => {
     setIsEditing(false);
@@ -61,38 +98,59 @@ const Profile = () => {
       password: false,
       image: false,
     }));
+    setUpdateError(null)
   };
 
+  const relativeIcons = {
+    'My Profile' : FaUsers,
+    'Saved Attraction' :FaMapMarkerAlt ,
+    'Saved Restraunts' : FaUtensils,
+    'Saved Events' : FaCalendarAlt,
+  }
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
     <>
-      <div className="min-h-screen container mx-auto bg-gray-900 pt-24 px-3">
-        <div className="max-w-[75vw] mx-auto  w-full px-4">
-          <h1 className="text-4xl font-chillax font-semibold">Your Profile</h1>
-          <div className="flex flex-col md:flex-row gap-8 mt-10">
-            <div className="w-full md:w-64 rounded-lg overflow-hidden">
-              <nav className="divide-y divide-gray-600">
-                {['My Profile', 'Saved Attraction', 'Saved Restraunts', 'Saved Events'].map(
-                  (e, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setActiveTab(e)}
-                      className={`w-full flex px-3 py-2.5 text-white font-excon font-semibold text-lg 
-                                ${
-                                  activeTab == e
-                                    ? 'bg-[#d1e7ea] text-myteal-900'
-                                    : 'bg-gray-800  text-gray-900 hover:bg-gray-600 '
-                                }
-                                `}
-                    >
-                      {e}
-                    </button>
-                  )
-                )}
-              </nav>
-            </div>
+      <div className="min-h-screen container mx-auto bg-gray-900 flex">
+        {/* Mobile menu button */}
+        <button 
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className="md:hidden fixed top-4 left-4 z-50 p-2 bg-gray-800 rounded-md text-white"
+        >
+          ☰
+        </button>
 
-            <div className="bg-gray-800 flex-1 rounded-lg py-3 px-4">
+      <div className={`fixed md:static z-40 h-screen bg-[#0e131e]/95 backdrop-blur-sm w-64 md:w-[18vw] pt-24 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-transform duration-200 ease-in-out`}>
+      <h1 className='text-[1.4rem] ml-3 tracking-wider font-bold'>Your Profile</h1>
+            <div className="w-full  overflow-hidden mt-2">
+                <nav className=" divide-gray-600">
+                  {['My Profile', 'Saved Attraction', 'Saved Restraunts', 'Saved Events'].map(
+                    (e, idx) => {
+                      const Icon = relativeIcons[e];
+                      return (
+                      <button
+                        key={idx}
+                        onClick={() => setActiveTab(e)}
+                        className={`w-full flex  items-center py-2.5 text-gray-400 pl-5 font-semibold text-md
+                                  ${
+                                    activeTab == e
+                                      ? 'bg-gray-800 text-white'
+                                      : 'hover:bg-gray-900 transition-all ease-in'
+                                  }
+                                  `}
+                      >
+                      {<Icon className='mr-2' /> } {e}
+                      </button>
+                  ) }
+                  )}
+                </nav>
+              </div>
+          </div>
+
+          <div className="w-full px-4 border-l border-gray-800">
+            <div className="flex flex-col md:flex-row gap-8 mt-28 bg-[#0e131e]/95 backdrop-blur-sm rounded-lg pt-4 pb-6 pr-14 pl-4">
+            <div className=" flex-1 rounded-lg py-3 px-4">
               {activeTab == 'My Profile' && (
                 <div className="">
                   <div className="flex justify-between mb-5">
@@ -130,14 +188,21 @@ const Profile = () => {
                   </div>
 
                   {isEditing ? (
-                    <form onSubmit={handleSumbit}>
+                    <form onSubmit={handleSumbit}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault(); // Prevent default form submission on Enter
+                        handleSumbit(e);
+                      }
+                    }}
+                    >
                       <div className="space-y-3">
                         <div>
                           <label>
                             <p className="text-sm font-chillax">Display Name</p>
                           </label>
                           <input
-                            className="border border-gray-900 text-gray-900 px-4 py-2 rounded relative  w-full"
+                            className="border border-gray-900 text-gray-900 px-4 py-2 rounded relative w-[500px]"
                             placeholder="Enter your name"
                             type="text"
                             id="name"
@@ -158,7 +223,7 @@ const Profile = () => {
                               id="email"
                               name="email"
                               placeholder={currentUser.email}
-                              className="border border-gray-900 text-gray-900 px-4 py-2 rounded w-full"
+                              className="border border-gray-900 text-gray-900 px-4 py-2 rounded w-[500px]"
                               value={formData.email}
                               onChange={(e) =>
                                 setFormData((prev) => ({ ...prev, email: e.target.value }))
@@ -167,7 +232,8 @@ const Profile = () => {
                             />
                           ) : (
                             <button
-                              className="bg-red-900 text-[0.7rem] py-1 px-2 rounded-sm"
+                              type='button'
+                              className="bg-red-900 text-[0.7rem] py-1 px-3 rounded-sm"
                               onClick={() =>
                                 setToggleEdit((prev) => ({
                                   ...prev,
@@ -188,7 +254,7 @@ const Profile = () => {
                             <>
                               <input
                                 type={showPassword ? 'text' : 'password'}
-                                className="border border-gray-900 text-gray-900 px-4 py-2 rounded w-full pr-12"
+                                className="border border-gray-900 text-gray-900 px-4 py-2 rounded w-[500px] pr-12"
                                 placeholder="Please only enter Password, If needed a change"
                                 name="password"
                                 value={formData.password}
@@ -206,7 +272,7 @@ const Profile = () => {
                             </>
                           ) : (
                             <button
-                              className="bg-red-900 text-[0.7rem] py-1 px-2 rounded-sm"
+                              className="bg-red-900 text-[0.7rem] py-1 px-3  rounded-sm"
                               onClick={() =>
                                 setToggleEdit((prev) => ({
                                   ...prev,
@@ -223,28 +289,35 @@ const Profile = () => {
                           <label>
                             <p className="text-sm font-excon ">Want to Change the Profile Pic ?</p>
                           </label>
-                          {toggleEdit.mainImage ? (
-                            <input
-                              className=" bg-gray-700 px-4 py-4 text-white rounded relative mb-4  w-full"
-                              placeholder="eg : http://dummy/photo"
-                              type="file"
-                              id="photoUrl"
-                              name="photoUrl"
-                              onChange={(e) =>
-                                setFormData((prev) => ({
-                                  ...prev,
-                                  mainImage: e.target.files[0],
-                                }))
-                              }
-                              value={formData.mainImage}
-                            />
+                          {toggleEdit.image ? (
+                            <div className="space-y-2">
+                              <input
+                                className="bg-gray-800 px-1 w-[500px] py-2 text-white rounded file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold hover:file:bg-teal-600"
+                                type="file"
+                                id="image"
+                                name="image"
+                                accept='image/*'
+                                onChange={handleInputChange}
+                              />
+                              {imagePreview && (
+                                <div className="mt-2">
+                                  <p className="text-sm text-gray-300 mb-1">Preview:</p>
+                                  <img 
+                                    src={imagePreview} 
+                                    alt="Profile preview" 
+                                    className="h-24 w-24 rounded-full object-cover border-2 border-teal-500"
+                                  />
+                                </div>
+                              )}
+                            </div>
                           ) : (
                             <button
-                              className="bg-red-900 text-[0.7rem] py-1 px-2 rounded-sm"
+                             type='button'
+                              className="bg-red-900 text-[0.7rem] py-1 px-3 rounded-sm"
                               onClick={() =>
                                 setToggleEdit((prev) => ({
                                   ...prev,
-                                  mainImage: !prev.mainImage,
+                                  image: !prev.image,
                                 }))
                               }
                             >
@@ -261,8 +334,8 @@ const Profile = () => {
                             Save Changes
                           </button>
                           <button
-                            className="bg-gray-200 text-gray-800 font-semibold hover:bg-gray-300 px-5 py-2 rounded-md transition"
                             onClick={cancelEdit}
+                            className="bg-gray-200 text-gray-800 font-semibold hover:bg-gray-300 px-5 py-2 rounded-md transition"
                             type="button"
                           >
                             Cancel

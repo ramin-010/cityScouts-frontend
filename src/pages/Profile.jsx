@@ -34,13 +34,12 @@ const Profile = () => {
     setUpdateError(null);
 
     try {
-      const formData = new FormData();
-
       await updateProfile(formData);
       setUpdateSuccess(true);
       setIsEditing(false);
     } catch (err) {
-      setUpdateError('Error Updating data : Please try again');
+      setIsEditing(false)
+      setUpdateError(err.message||'Error Updating data : Please try again');
     }
   };
 
@@ -64,62 +63,6 @@ const Profile = () => {
     }));
   };
 
-  const savedItems = {
-    attractions: [
-      {
-        id: '1',
-        name: 'Rock Garden',
-        category: 'Landmark',
-        location: 'Sector 1, Chandigarh',
-      },
-      {
-        id: '2',
-        name: 'Sukhna Lake',
-        category: 'Lakes & Waterfront',
-        location: 'Sector 1, Chandigarh',
-      },
-      {
-        id: '3',
-        name: 'Rock Garden',
-        category: 'Landmark',
-        location: 'Sector 1, Chandigarh',
-      },
-      {
-        id: '4',
-        name: 'Sukhna Lake',
-        category: 'Lakes & Waterfront',
-        location: 'Sector 1, Chandigarh',
-      },
-    ],
-    restaurants: [
-      {
-        id: '1',
-        name: 'Pal Dhaba',
-        category: 'North Indian',
-        location: 'Sector 28, Chandigarh',
-      },
-      {
-        id: '2',
-        name: "Gopal's 56",
-        category: 'Multi-Cuisine',
-        location: 'Sector 8, Chandigarh',
-      },
-    ],
-    events: [
-      {
-        id: '1',
-        name: 'Rose Festival',
-        category: 'Festival',
-        date: 'February 23-25, 2024',
-      },
-      {
-        id: '2',
-        name: 'International Yoga Day',
-        category: 'Health & Wellness',
-        date: 'June 21, 2024',
-      },
-    ],
-  };
 
   return (
     <>

@@ -125,18 +125,18 @@ export const useAuth = () => {
   const updateProfile = async (userData) => {
     try {
       setLoading(true);
-
+      console.log("this is the user ",userData)
       const response = await axios.put(
-        `${import.meta.env.VITE_FETCH_URL}/api/users/updateProfile/`,
+        `${import.meta.env.VITE_FETCH_URL}/api/users/updateProfile/${currentUser._id}`,
         userData,
         { withCredentials: true }
-      ); //dummy : override the current user data with the changed user data
+      );
       const updatadUser = response.data;
 
       setCurrentUser(updatadUser);
       setError(null);
     } catch (err) {
-      setError(err.response?.data?.message || 'Profile update Failed. Please try again');
+      throw new Error(err.response?.data?.message || 'Profile update Failed. Please try again');
     } finally {
       setLoading(false);
     }

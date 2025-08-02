@@ -112,16 +112,32 @@ const Profile = () => {
 
   return (
     <>
-      <div className="min-h-screen container mx-auto bg-gray-900 flex">
+      <div className="min-h-screen container mx-auto bg-gray-900 flex relative">
         {/* Mobile menu button */}
         <button 
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="md:hidden fixed top-4 left-4 z-50 p-2 bg-gray-800 rounded-md text-white"
+          className="md:hidden fixed top-14 left-4  px-2 py-1 text-xl bg-gray-800 rounded-md text-white"
+          aria-label="Toggle menu"
         >
           ☰
         </button>
 
-      <div className={`fixed md:static z-40 h-screen bg-[#0e131e]/95 backdrop-blur-sm w-64 md:w-[18vw] pt-24 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-transform duration-200 ease-in-out`}>
+        {/* Mobile overlay */}
+        {isSidebarOpen && (
+          <div 
+            className="fixed inset-0 bg-black/50 z-30 md:hidden"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
+
+        <div className={`fixed md:static z-40 h-screen bg-[#0e131e] md:bg-[#0e131e]/95 backdrop-blur-sm w-64 md:w-[18vw] pt-24 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-transform duration-200 ease-in-out`}>
+          <button 
+            onClick={() => setIsSidebarOpen(false)}
+            className="md:hidden absolute top-4 p-4 text-xl font-bold right-4 text-gray-400 hover:text-white"
+            aria-label="Close menu"
+          >
+            ✕
+          </button>
       <h1 className='text-[1.4rem] ml-3 tracking-wider font-bold'>Your Profile</h1>
             <div className="w-full  overflow-hidden mt-2">
                 <nav className=" divide-gray-600">
@@ -148,8 +164,8 @@ const Profile = () => {
               </div>
           </div>
 
-          <div className="w-full px-4 border-l border-gray-800">
-            <div className="flex flex-col md:flex-row gap-8 mt-28 bg-[#0e131e]/95 backdrop-blur-sm rounded-lg pt-4 pb-6 pr-14 pl-4">
+          <div className="w-full px-2 sm:px-4 border-l border-gray-800 overflow-x-hidden">
+            <div className="flex flex-col gap-6 sm:gap-8 mt-28 sm:mt-28 bg-[#0e131e]/95 backdrop-blur-sm rounded-lg p-4 sm:p-6 sm:pr-14">
             <div className=" flex-1 rounded-lg py-3 px-4">
               {activeTab == 'My Profile' && (
                 <div className="">
@@ -202,7 +218,7 @@ const Profile = () => {
                             <p className="text-sm font-chillax">Display Name</p>
                           </label>
                           <input
-                            className="border border-gray-900 text-gray-900 px-4 py-2 rounded relative w-[500px]"
+                            className="border border-gray-900 text-gray-900 px-4 py-2 rounded w-full max-w-[500px] sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl"
                             placeholder="Enter your name"
                             type="text"
                             id="name"
@@ -222,7 +238,7 @@ const Profile = () => {
                               id="email"
                               name="email"
                               placeholder={currentUser.email}
-                              className="border border-gray-900 text-gray-900 px-4 py-2 rounded w-[500px]"
+                              className="border border-gray-900 text-gray-900 px-4 py-2 rounded w-full max-w-[500px]"
                               value={formData.email}
                               onChange={(e) =>
                                 setFormData((prev) => ({ ...prev, email: e.target.value }))
@@ -252,7 +268,7 @@ const Profile = () => {
                             <>
                               <input
                                 type={showPassword ? 'text' : 'password'}
-                                className="border border-gray-900 text-gray-900 px-4 py-2 rounded w-[500px] pr-12"
+                                className="border border-gray-900 text-gray-900 px-4 py-2 rounded w-full max-w-[500px] pr-12"
                                 placeholder="Please only enter Password, If needed a change"
                                 name="password"
                                 value={formData.password}
@@ -290,7 +306,7 @@ const Profile = () => {
                           {toggleEdit.image ? (
                             <div className="space-y-2">
                               <input
-                                className="bg-gray-800 px-1 w-[500px] py-2 text-white rounded file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold hover:file:bg-teal-600"
+                                className="bg-gray-800 px-1 w-full max-w-[500px] py-2 text-white rounded file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold hover:file:bg-teal-600"
                                 type="file"
                                 id="image"
                                 name="image"
@@ -342,7 +358,7 @@ const Profile = () => {
                       </div>
                     </form>
                   ) : (
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
                       <div className="w-24 h-24 rounded-full overflow-hidden bg-teal-100 flex-shrink-0 shadow-sm border border-teal-200">
                         {currentUser && currentUser?.mainImage ? (
                           <img

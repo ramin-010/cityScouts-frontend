@@ -67,7 +67,6 @@ const Attraction = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Get current scroll position
       const currentScrollY = window.scrollY;
       const scrollDirection = currentScrollY > lastScrollY.current ? 'down' : 'up';
       lastScrollY.current = currentScrollY;
@@ -75,26 +74,23 @@ const Attraction = () => {
       // Only trigger when scrolling down
       if (scrollDirection !== 'down') return;
 
-      // Calculate distance from bottom
       const windowHeight = window.innerHeight;
       const documentHeight = document.documentElement.scrollHeight;
       const scrollPosition = window.scrollY + windowHeight;
-      const scrollThreshold = window.innerWidth < 768 ? 500 : 200; // Larger threshold for mobile
+      const scrollThreshold = window.innerWidth < 768 ? 1000 : 200; // Larger threshold for mobile
       const distanceFromBottom = documentHeight - scrollPosition;
 
-      // Clear any existing timeout
       if (scrollTimeout.current) {
         clearTimeout(scrollTimeout.current);
       }
 
-      // Only proceed if we're close to the bottom and not already loading
+     
       if (
         distanceFromBottom < scrollThreshold &&
         hasMore &&
         !loading &&
         !isFetchingRef.current
       ) {
-        // Use a small debounce to prevent multiple rapid triggers
         scrollTimeout.current = setTimeout(() => {
           isFetchingRef.current = true;
           fetchMore().finally(() => {
@@ -102,7 +98,10 @@ const Attraction = () => {
           });
         }, 50);
       }
+      
     };
+
+   
 
     // Add passive: true for better scrolling performance
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -302,7 +301,7 @@ const Attraction = () => {
             <AttractionItem key={`${item._id}-${item.updatedAt || ''}`} item={item} />
           ))}
           {loading && (
-            <div className="col-span-full flex justify-center items-center py-10">
+            <div className="col-span-full flex justify-center items-center py-20">
               <div className="animate-spin rounded-full h-14 w-14 border-t-2 border-b-2 border-teal-500"></div>
               <p className="ml-4 font-khand font-medium">Loading more attractions...</p>
             </div>

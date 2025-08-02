@@ -30,15 +30,16 @@ const DiningItem = memo(({ dining }) => {
             </div>
           }
         </div>
-        <div className="md:flex">
-          <div className="md:w-[25rem]  w-full ">
+        <div className="md:flex w-full">
+          <div className="md:w-[25rem] w-full aspect-video md:aspect-[4/3] p-0.5">
             {!imageError ? (
-              <div className="w-full h-full flex items-center justify-center">
+              <div className="w-full h-full relative overflow-hidden rounded-lg">
                 <img
                   src={dining.mainImage}
                   onError={() => setImageError(true)}
                   alt={dining.name}
-                  className="w-[98%] h-[98%] object-cover rounded-lg"
+                  className="absolute inset-0 w-full h-full object-cover"
+                  loading="lazy"
                 />
               </div>
             ) : (

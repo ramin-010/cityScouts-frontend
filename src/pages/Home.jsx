@@ -10,7 +10,7 @@ import {
   FaMonument,
 } from 'react-icons/fa';
 
-import heroImage from '../assets/Hero_image_Hompage.jpg';
+import heroImage from '../assets/Hero_image_Hompage.webp';
 
 // Attraction images
 
